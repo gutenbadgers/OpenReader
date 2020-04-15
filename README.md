@@ -5,17 +5,19 @@ An open-source e-reader for out-of-copyright books written in Python 3.
 ## Installation
 
 ```shell
-pip install -r requirements.txt
+pip install flask
 ```
 
 ## Usage
 
-Use `python server.py` to run, then visit http://127.0.0.1:5000 in your browser.
+Use `flask run` to run, then visit http://127.0.0.1:5000 in your browser.
 
-## Contributor Guidelines
+To start the development server (auto-reload on source change and an interactive debugger), use `FLASK_ENV=development flask run`
+
+## Contributor Info
 
 * Tabs, not spaces. That's what the tab key is for.
 
-* Don't push (even to your own branch) if there are errors or warnings.
+* (Optional) Consider using `virtualenv` to prevent cluttering your global pip environment.
 
-* If you use `pip` for anything except initial installation, regenerate `requirements.txt` with `pip freeze --user > requirements.txt`
+* Don't commit (even to your own branch) if there are errors or warnings.
