@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<div>OpenReader: <a href="/index">Home</a></div>
+	<hr>
+	<h1>Search results for "{{ terms }}":</h1>
+	{% for book in books %}
+	<div><p><strong>{{ book.title }}</strong> by {{ book.authors[0].name }}</p></div>
+	{% endfor %}
+{% endblock %}

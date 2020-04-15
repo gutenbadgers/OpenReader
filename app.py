@@ -7,6 +7,7 @@ app = Flask(__name__)
 catalog = "http://gutendex.com/books"
 
 @app.route("/")
+@app.route("/index")
 def hello():
 	return render_template("hello.html", title = "OpenReader Test", name = "world")
 
@@ -14,7 +15,9 @@ def hello():
 def search(terms):
 	url = catalog + "?search={}".format(urllib.parse.quote(terms))
 	with urllib.request.urlopen(url) as req:
-		return json.loads(req.read().decode())
+		books = json.loads(req.read().decode())["results"]
+		title = "Search results"
+		return render_template("searchResults.html", **locals())
 
 if __name__ == "__main__":
 	app.run()

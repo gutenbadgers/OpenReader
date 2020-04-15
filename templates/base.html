@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	  {% if title %}
+	  <title>{{ title }} - OpenReader</title>
+	  {% else %}
+	  <title>OpenReader</title>
+	  {% endif %}
+	</head>
+	<body>
+		{% block content %}{% endblock %}
+	</body>
+</html>
