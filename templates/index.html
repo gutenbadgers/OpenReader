@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block body %}
+	<h1>OpenReader Home Page</h1>
+	<h2>Working</h2>
+	<ul>
+		<li><a href="{{ url_for('book', id=98) }}">Pages for single books</a></li>
+		<li><a href="{{ url_for('search', terms='charles dickens') }}">Barebones search results</a> (edit the URL yourself)</li>
+	</ul>
+	<h2>Not implemented</h2>
+	<ul>
+		<li><a href="{{ url_for('login') }}">Login and accounts</a></li>
+		<li><a href="{{ url_for('bookshelf') }}">Personalized bookshelves</a></li>
+	</ul>
+{% endblock %}
