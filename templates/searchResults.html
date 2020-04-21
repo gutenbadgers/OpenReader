@@ -3,8 +3,19 @@
 {% block body %}
 	<div>OpenReader: <a href="/">Home</a></div>
 	<hr>
+	<h1>Search</h1>
+	<form action="{{ url_for('search') }}" method="post">
+		<input type="text" name="terms" value="{{ terms }}">
+		<input type="submit" value="Submit">
+	</form>
 	<h1>Search results for "{{ terms }}":</h1>
 	{% for book in books %}
-	<div><p><a href="{{ url_for('book', id=book.id) }}">{{ book.title }}</a> by {{ book.authors[0].name }}</p></div>
+		<div><p><a href="{{ url_for('book', id=book.id) }}">{{ book.title }}</a>
+			{% if book.authors %}
+				by {{ book.authors[0].name }}</p></div>
+			{% endif %}
+		</p></div>
+	{% else %}
+		<p>No results!</p>
 	{% endfor %}
 {% endblock %}

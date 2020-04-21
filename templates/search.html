@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block body %}
+	<div>OpenReader: <a href="/">Home</a></div>
+	<hr>
+	<h1>Search</h1>
+	<form action="{{ url_for('search') }}" method="post">
+		<input type="text" name="terms">
+		<input type="submit" value="Submit">
+	</form>
+{% endblock %}

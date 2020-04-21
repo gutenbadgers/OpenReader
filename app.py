@@ -38,8 +38,17 @@ def book(id):
 	title = book["title"]
 	return render_template("bookInfo.html", **locals())
 
+@app.route('/search', methods=['GET'])
+def searchGet():
+	return render_template("search.html", title="Search")
+
+@app.route('/search', methods=['POST'])
+def search():
+	url = "/search/" + urllib.parse.quote(request.form.get('terms'))
+	return redirect(url, code=302)
+
 @app.route("/search/<string:terms>")
-def search(terms):
+def searchResults(terms):
 	books = readCatalog("?search=" + urllib.parse.quote(terms))["results"]
 	title = "Search results"
 	return render_template("searchResults.html", **locals())
