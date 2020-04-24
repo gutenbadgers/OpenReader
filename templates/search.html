@@ -4,8 +4,14 @@
 	<div>OpenReader: <a href="/">Home</a></div>
 	<hr>
 	<h1>Search</h1>
+	<h2>By Title:</h2>
 	<form action="{{ url_for('search') }}" method="post">
-		<input type="text" name="terms">
+		<input type="text" name="termsTitle">
+		<input type="submit" value="Submit">
+	</form>
+	<h2>By Author:</h2>
+	<form action="{{ url_for('search') }}" method="post">
+		<input type="text" name="termsAuthor">
 		<input type="submit" value="Submit">
 	</form>
 {% endblock %}

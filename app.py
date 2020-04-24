@@ -44,13 +44,37 @@ def searchGet():
 
 @app.route('/search', methods=['POST'])
 def search():
-	url = "/search/" + urllib.parse.quote(request.form.get('terms'))
-	return redirect(url, code=302)
+	# Depending on which form is sent to this route (author or title), redirect to different routes
+	if (request.form.get('termsTitle')):
+		url = "/search/title=" + urllib.parse.quote(request.form.get('termsTitle'))
+		return redirect(url, code=302)
+	elif (request.form.get('termsAuthor')):
+		url = "/search/author=" + urllib.parse.quote(request.form.get('termsAuthor'))
+		return redirect(url, code=302)
 
-@app.route("/search/<string:terms>")
-def searchResults(terms):
+@app.route("/search/title=<string:terms>")
+def searchResultsTitle(terms):
 	books = readCatalog("?search=" + urllib.parse.quote(terms))["results"]
 	title = "Search results"
+
+	bookTitles = []
+	for i in books:
+		if (terms.lower() in i["title"].lower()):								# Checks if search term is in each results title
+			bookTitles.append(i["title"])										# Appends it to final results if so
+
+	return render_template("searchResults.html", **locals())
+
+@app.route("/search/author=<string:terms>")
+def searchResultsAuthor(terms):
+	books = readCatalog("?search=" + urllib.parse.quote(terms))["results"]
+	title = "Search results"
+	
+	authors = []
+	for i in books:
+		for j in i["authors"]:
+			if (terms.lower() in j["name"].lower()):						# Checks if search term is in each results author
+				authors.append(j["name"])									# Appends it to final results if so
+
 	return render_template("searchResults.html", **locals())
 
 if __name__ == "__main__":
