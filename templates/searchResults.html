@@ -14,6 +14,11 @@
 		<input type="text" name="termsAuthor">
 		<input type="submit" value="Submit">
 	</form>
+	<h2>By Category:</h2>
+	<form action="{{ url_for('search') }}" method="POST">
+		<input type="text" name="category">
+		<input type="submit" value="Submit">
+	</form>
 	{% if bookTitles %}
 	<h1>Search results for "{{ terms }}" in Titles:</h1>
 		{% for title in bookTitles %}
@@ -27,6 +32,13 @@
 			<div><p>
 				<a href="#">{{ author }}</a>
 			</p></div>
+		{% endfor %}
+	{% elif categoryBooks %}
+	<h1>Search results for "{{ terms }}" in Category:</h1>
+		{% for book in categoryBooks %}
+			<div>
+				<p><a href="">{{ book.title }}</a></p>
+			</div>
 		{% endfor %}
 	{% else %}
 		<p>No results!</p>
