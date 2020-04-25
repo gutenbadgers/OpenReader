@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block body %}
-	<div>OpenReader: <a href="/">Home</a></div>
-	<hr>
 	<h1>Search</h1>
 	<h2>By Title:</h2>
 	<form action="{{ url_for('search') }}" method="post">
@@ -37,7 +35,14 @@
 	<h1>Search results for "{{ terms }}" in Category:</h1>
 		{% for book in categoryBooks %}
 			<div>
-				<p><a href="">{{ book.title }}</a></p>
+				<p><a href="">{{ book.title }} by {{ book.authors[0]['name'] }}</a></p>
+				<p>Categories:
+					<ul>
+						{% for subject in book.subjects %}
+						<li>{{ subject }}</li>
+						{% endfor %}
+					</ul>
+				</p>
 			</div>
 		{% endfor %}
 	{% else %}
