@@ -55,11 +55,9 @@ def search():
 def searchResultsTitle(terms):
 	books = readCatalog("?search=" + urllib.parse.quote(terms))["results"]
 	title = "Search results"
-
-	bookTitles = []
-	for i in books:
-		if (terms.lower() in i["title"].lower()):								# Checks if search term is in each results title
-			bookTitles.append(i["title"])										# Appends it to final results if so
+	
+	# Creates a copy of 'books' with only the items that contain 'terms' in title
+	titleResults = [x for x in books if terms.lower() in x["title"].lower()] 			
 
 	return render_template("searchResults.html", **locals())
 
@@ -68,11 +66,14 @@ def searchResultsAuthor(terms):
 	books = readCatalog("?search=" + urllib.parse.quote(terms))["results"]
 	title = "Search results"
 	
-	authors = []
-	for i in books:
-		for j in i["authors"]:
-			if (terms.lower() in j["name"].lower()):						# Checks if search term is in each results author
-				authors.append(j["name"])									# Appends it to final results if so
+	authorResults = []
+
+	# Creates a copy of 'books' with only the items that contain 'terms' in authors
+	for book in books:
+		if (book["authors"]):
+			for author in book["authors"]:
+				if (terms.lower() in author["name"].lower()):
+					authorResults.append(book)					
 
 	return render_template("searchResults.html", **locals())
 
