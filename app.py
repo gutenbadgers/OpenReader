@@ -32,7 +32,22 @@ def bookshelf():
 def book(id):
 	book = readCatalog("/{}".format(id))
 	title = book["title"]
+
+	bookURL = "https://www.gutenberg.org/files/{0}/{0}-h/{0}-h.htm".format(id)
+	print(bookURL);
+
 	return render_template("bookInfo.html", **locals())
+
+@app.route("/book/<int:id>/read")
+def readBook(id):
+	bookURL = "https://www.gutenberg.org/files/{0}/{0}-h/{0}-h.htm".format(id)
+	print(bookURL);
+
+	website = urllib.request.urlopen(bookURL)
+	html = website.read()
+
+	return html
+
 
 @app.route('/search', methods=['GET'])
 def searchGet():
@@ -55,9 +70,9 @@ def search():
 def searchResultsTitle(terms):
 	books = readCatalog("?search=" + urllib.parse.quote(terms))["results"]
 	title = "Search results"
-	
+
 	# Creates a copy of 'books' with only the items that contain 'terms' in title
-	titleResults = [x for x in books if terms.lower() in x["title"].lower()] 			
+	titleResults = [x for x in books if terms.lower() in x["title"].lower()]
 
 	return render_template("searchResults.html", **locals())
 
@@ -65,7 +80,7 @@ def searchResultsTitle(terms):
 def searchResultsAuthor(terms):
 	books = readCatalog("?search=" + urllib.parse.quote(terms))["results"]
 	title = "Search results"
-	
+
 	authorResults = []
 
 	# Creates a copy of 'books' with only the items that contain 'terms' in authors
@@ -73,7 +88,7 @@ def searchResultsAuthor(terms):
 		if (book["authors"]):
 			for author in book["authors"]:
 				if (terms.lower() in author["name"].lower()):
-					authorResults.append(book)					
+					authorResults.append(book)
 
 	return render_template("searchResults.html", **locals())
 
