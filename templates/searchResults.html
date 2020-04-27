@@ -19,18 +19,19 @@
 		<input type="text" name="category">
 		<input type="submit" value="Submit">
 	</form>
-	{% if bookTitles %}
+	{% if titleResults %}
 	<h1>Search results for "{{ terms }}" in Titles:</h1>
-		{% for title in bookTitles %}
-			<div><p>
-				<a href="#">{{ title }}</a>
-			</p></div>
+		{% for book in titleResults %}
+			<a href="{{ url_for('book', id=book.id) }}">{{ book.title }}</a>
+			{% if book.authors %}
+				by {{ book.authors[0].name }}</p></div>
+			{% endif %}
 		{% endfor %}
-	{% elif authors %}
+	{% elif authorResults %}
 	<h1>Search results for "{{ terms }}" in Authors:</h1>
-		{% for author in authors %}
+		{% for book in authorResults %}
 			<div><p>
-				<a href="#">{{ author }}</a>
+				<a href="#">{{ book.authors[0].name }}</a>
 			</p></div>
 		{% endfor %}
 	{% elif categoryBooks %}

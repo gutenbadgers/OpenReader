@@ -65,7 +65,6 @@ def searchResultsTitle(terms):
 def searchResultsAuthor(terms):
 	books = readCatalog("?search=" + urllib.parse.quote(terms))["results"]
 	title = "Search results"
-	
 	authorResults = []
 
 	# Creates a copy of 'books' with only the items that contain 'terms' in authors
