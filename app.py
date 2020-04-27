@@ -41,15 +41,17 @@ def searchGet():
 @app.route('/search', methods=['POST'])
 def search():
 	# Depending on which form is sent to this route, redirect to different routes
-	if (request.form.get('termsTitle')):
-		url = "/search/title=" + urllib.parse.quote(request.form.get('termsTitle'))
+	print(request.form.get("terms"))
+	if (request.form.get('searchType') == "title"):
+		url = "/search/title=" + urllib.parse.quote(request.form.get('terms'))
 		return redirect(url, code=302)
-	elif (request.form.get('termsAuthor')):
-		url = "/search/author=" + urllib.parse.quote(request.form.get('termsAuthor'))
+	elif (request.form.get('searchType') == "author"):
+		url = "/search/author=" + urllib.parse.quote(request.form.get('terms'))
 		return redirect(url, code=302)
-	elif (request.form.get('category')):
-		url = "/search/category=" + urllib.parse.quote(request.form.get('category'))
+	elif (request.form.get('searchType') == "category"):
+		url = "/search/category=" + urllib.parse.quote(request.form.get('terms'))
 		return redirect(url, code=302)
+	# no else. It won'd do anything unless they pick one.
 
 @app.route("/search/title=<string:terms>")
 def searchResultsTitle(terms):
@@ -57,7 +59,7 @@ def searchResultsTitle(terms):
 	title = "Search results"
 	searchType = "title"
 	
-	# Creates a copy of 'books' with only the items that contain 'terms' in title
+	# refine results to only include title matches
 	books = [x for x in results if terms.lower() in x["title"].lower()] 			
 
 	return render_template("searchResults.html", **locals())
@@ -69,7 +71,7 @@ def searchResultsAuthor(terms):
 	searchType = "author"
 	books = []
 
-	# Creates a copy of 'books' with only the items that contain 'terms' in authors
+	# refine results to only include author matches
 	for book in results:
 		if (book["authors"]):
 			for author in book["authors"]:

@@ -2,22 +2,19 @@
 
 {% block body %}
 	<h1>Search</h1>
-	<h2>By Title:</h2>
-	<form action="{{ url_for('search') }}" method="post">
-		<input type="text" name="termsTitle">
-		<input type="submit" value="Submit">
-	</form>
-	<h2>By Author:</h2>
-	<form action="{{ url_for('search') }}" method="post">
-		<input type="text" name="termsAuthor">
-		<input type="submit" value="Submit">
-	</form>
-	<h2>By Category:</h2>
 	<form action="{{ url_for('search') }}" method="POST">
-		<input type="text" name="category">
+		<input type="text" name="terms">
+		<br>
+		<input type="radio" id="title" name="searchType" value="title" checked="checked">
+		<label for="title">Title</label><br>
+		<input type="radio" id="author" name="searchType" value="author">
+		<label for="author">Author</label><br>
+		<input type="radio" id="category" name="searchType" value="category">
+		<label for="category">Category</label><br>
+
 		<input type="submit" value="Submit">
 	</form>
-	<h1>Search results for "{{ terms }}" in {{ searchType }}:</h1>
+	<h1>Search results for "{{ terms }}" by {{ searchType }}:</h1>
 	{% if books %}
 		{% for book in books %}
 			<a href="{{ url_for('book', id=book.id) }}">{{ book.title }}</a>
