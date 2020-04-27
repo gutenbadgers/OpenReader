@@ -17,35 +17,13 @@
 		<input type="text" name="category">
 		<input type="submit" value="Submit">
 	</form>
-	{% if titleResults %}
-	<h1>Search results for "{{ terms }}" in Titles:</h1>
-		{% for book in titleResults %}
+	<h1>Search results for "{{ terms }}" in {{ searchType }}:</h1>
+	{% if books %}
+		{% for book in books %}
 			<a href="{{ url_for('book', id=book.id) }}">{{ book.title }}</a>
 			{% if book.authors %}
 				by {{ book.authors[0].name }}</p></div>
 			{% endif %}
-		{% endfor %}
-	{% elif authorResults %}
-	<h1>Search results for "{{ terms }}" in Authors:</h1>
-		{% for book in authorResults %}
-			<a href="{{ url_for('book', id=book.id) }}">{{ book.title }}</a>
-			{% if book.authors %}
-				by {{ book.authors[0].name }}</p></div>
-			{% endif %}
-		{% endfor %}
-	{% elif categoryBooks %}
-	<h1>Search results for "{{ terms }}" in Category:</h1>
-		{% for book in categoryBooks %}
-			<div>
-				<p><a href="{{ url_for('book', id=book.id) }}">{{ book.title }} by {{ book.authors[0]['name'] }}</a></p>
-				<p>Categories:
-					<ul>
-						{% for subject in book.subjects %}
-						<li>{{ subject }}</li>
-						{% endfor %}
-					</ul>
-				</p>
-			</div>
 		{% endfor %}
 	{% else %}
 		<p>No results!</p>

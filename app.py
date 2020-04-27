@@ -53,26 +53,28 @@ def search():
 
 @app.route("/search/title=<string:terms>")
 def searchResultsTitle(terms):
-	books = readCatalog("?search=" + urllib.parse.quote(terms))["results"]
+	results = readCatalog("?search=" + urllib.parse.quote(terms))["results"]
 	title = "Search results"
+	searchType = "title"
 	
 	# Creates a copy of 'books' with only the items that contain 'terms' in title
-	titleResults = [x for x in books if terms.lower() in x["title"].lower()] 			
+	books = [x for x in results if terms.lower() in x["title"].lower()] 			
 
 	return render_template("searchResults.html", **locals())
 
 @app.route("/search/author=<string:terms>")
 def searchResultsAuthor(terms):
-	books = readCatalog("?search=" + urllib.parse.quote(terms))["results"]
+	results = readCatalog("?search=" + urllib.parse.quote(terms))["results"]
 	title = "Search results"
-	authorResults = []
+	searchType = "author"
+	books = []
 
 	# Creates a copy of 'books' with only the items that contain 'terms' in authors
-	for book in books:
+	for book in results:
 		if (book["authors"]):
 			for author in book["authors"]:
 				if (terms.lower() in author["name"].lower()):
-					authorResults.append(book)					
+					books.append(book)					
 
 	return render_template("searchResults.html", **locals())
 
@@ -80,10 +82,7 @@ def searchResultsAuthor(terms):
 def searchResultsCategory(terms):
 	books = readCatalog("?topic=" + urllib.parse.quote(terms))["results"]
 	title = "Search results"
-
-	categoryBooks = []
-	for i in books:
-		categoryBooks.append(i)
+	searchType = "category"
 
 	return render_template("searchResults.html", **locals())
 
