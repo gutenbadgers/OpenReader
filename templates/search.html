@@ -2,16 +2,29 @@
 
 {% block body %}
 	<h1>Search</h1>
-	<form action="{{ url_for('search') }}" method="POST">
-		<input type="text" name="terms">
+	<form action="{{ url_for('searchPOST') }}" method="POST">
+		<input type="text" name="terms" required>
 		<br>
-		<input type="radio" id="title" name="searchType" value="title" checked="checked">
+		<input type="radio" id="title" name="searchType" value="title" required>
 		<label for="title">Title</label><br>
-		<input type="radio" id="author" name="searchType" value="author">
+		<input type="radio" id="author" name="searchType" value="author" required>
 		<label for="author">Author</label><br>
-		<input type="radio" id="category" name="searchType" value="category">
+		<input type="radio" id="category" name="searchType" value="category" required>
 		<label for="category">Category</label><br>
 
 		<input type="submit" value="Submit">
 	</form>
+	{% if terms %}
+		<h1>Search results for "{{ terms }}" by {{ searchType }}:</h1>
+		{% if books %}
+			{% for book in books %}
+				<a href="{{ url_for('book', id=book.id) }}">{{ book.title }}</a>
+				{% if book.authors %}
+					by {{ book.authors[0].name }}</p></div>
+				{% endif %}
+			{% endfor %}
+		{% else %}
+			<p>No results!</p>
+		{% endif %}
+	{% endif %}
 {% endblock %}
