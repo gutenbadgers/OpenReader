@@ -3,15 +3,18 @@
 {% block body %}
 	<h1>Search</h1>
 	<form action="{{ url_for('searchPOST') }}" method="POST">
-		<input type="text" name="terms" required>
+		<input type="text" name="terms" {% if terms %}value="{{ terms }}"{% endif %} required>
 		<br>
-		<input type="radio" id="title" name="searchType" value="title" required>
+		<input type="radio" id="title" name="searchType" value="title"
+			{% if searchType == "title" %}checked="checked"{% endif %} required>
 		<label for="title">Title</label><br>
-		<input type="radio" id="author" name="searchType" value="author" required>
+		<input type="radio" id="author" name="searchType" value="author"
+			{% if searchType == "author" %}checked="checked"{% endif %} required>
 		<label for="author">Author</label><br>
-		<input type="radio" id="category" name="searchType" value="category" required>
-		<label for="category">Category</label><br>
-
+		<input type="radio" id="category" name="searchType" value="category"
+			{% if searchType == "category" %}checked="checked"{% endif %} required>
+		<label for="category">Category</label>
+		<br>
 		<input type="submit" value="Submit">
 	</form>
 	{% if terms %}

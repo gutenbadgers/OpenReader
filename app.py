@@ -8,9 +8,11 @@ app = Flask(__name__)
 catalog = "http://gutendex.com/books"
 
 
-# unused utility function to turn API result into an object
-#def _json_object_hook(d): return namedtuple('X', d.keys())(*d.values())
-#def json2obj(data): return json.loads(data, object_hook=_json_object_hook)
+# unused utility function to turn API result into an object.
+# requires namedtuple, commented out from the imports.
+#def json2obj(data):
+#	dict2obj = lambda d: namedtuple('X', d.keys())(*d.values())
+#	return json.loads(data, object_hook=dict2obj)
 
 
 def readCatalog(route):
@@ -21,7 +23,7 @@ def readCatalog(route):
 
 @app.route("/")
 @app.route("/index")
-def hello():
+def index():
 	return render_template("index.html")
 
 
@@ -38,8 +40,7 @@ def bookshelf():
 @app.route("/book/<int:id>")
 def book(id):
 	book = readCatalog("/{}".format(id))
-	title = book["title"]
-	bookURL = "https://www.gutenberg.org/files/{0}/{0}-h/{0}-h.htm".format(id)
+	title = "Info: " + book["title"]
 	return render_template("bookInfo.html", **locals())
 
 
@@ -51,24 +52,22 @@ def readBook(id):
 
 
 @app.route('/search', methods=['GET'])
-def searchGET():
+def search():
 	return render_template("search.html", title="Search")
 
 
 @app.route('/search', methods=['POST'])
 def searchPOST():
+	searchType = request.form.get('searchType')
 	url = ""
-	if (request.form.get('searchType') == "title"):
-		url = "/search/title=" + urllib.parse.quote(request.form.get('terms'))
-	elif (request.form.get('searchType') == "author"):
-		url = "/search/author=" + urllib.parse.quote(request.form.get('terms'))
-	elif (request.form.get('searchType') == "category"):
-		url = "/search/category=" + urllib.parse.quote(request.form.get('terms'))
 
-	if url:
-		return redirect(url, code=303)
+	if searchType in ["title", "author", "category"]:
+		url = "/search/{}=".format(searchType)
 	else:
 		abort(400) # client error: invalid form
+
+	url += urllib.parse.quote(request.form.get('terms'))
+	return redirect(url, code=303)
 
 
 @app.route("/search/title=<string:terms>")
