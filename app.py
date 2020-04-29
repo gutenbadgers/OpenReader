@@ -1,18 +1,11 @@
 from flask import Flask, flash, redirect, render_template, request, session, abort
 import urllib.request, json
-#from collections import namedtuple
 
 app = Flask(__name__)
 
+
 # https://github.com/garethbjohnson/gutendex#api
 catalog = "http://gutendex.com/books"
-
-
-# unused utility function to turn API result into an object.
-# requires namedtuple, commented out from the imports.
-#def json2obj(data):
-#	dict2obj = lambda d: namedtuple('X', d.keys())(*d.values())
-#	return json.loads(data, object_hook=dict2obj)
 
 
 def readCatalog(route):
@@ -47,8 +40,15 @@ def book(id):
 @app.route("/book/<int:id>/read")
 def readBook(id):
 	bookURL = "https://www.gutenberg.org/files/{0}/{0}-h/{0}-h.htm".format(id)
-	website = urllib.request.urlopen(bookURL)
-	return website.read()
+	with urllib.request.urlopen(bookURL) as req:
+		return req.read()
+
+
+@app.route("/book/<int:id>/images/<string:imageName>")
+def bookImage(id, imageName):
+	imageURL = "https://www.gutenberg.org/files/{0}/{0}-h/images/{1}".format(id, imageName)
+	with urllib.request.urlopen(imageURL) as req:
+		return req.read()
 
 
 @app.route('/search', methods=['GET'])

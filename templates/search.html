@@ -21,7 +21,9 @@
 		<h1>Search results for "{{ terms }}" by {{ searchType }}:</h1>
 		{% if books %}
 			{% for book in books %}
-				<a href="{{ url_for('book', id=book.id) }}">{{ book.title }}</a>
+				<a href="{{ url_for('book', id=book.id) }}">	
+				<img class="book-cover" src="https://www.gutenberg.org/cache/epub/{{ book.id }}/pg{{ book.id }}.cover.small.jpg" title="Book Cover" alt="Book Cover" itemprop="image">
+				{{ book.title }}</a>
 				{% if book.authors %}
 					by {{ book.authors[0].name }}</p></div>
 				{% endif %}
