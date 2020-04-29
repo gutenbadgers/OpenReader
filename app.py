@@ -1,5 +1,6 @@
 from flask import Flask, redirect, render_template, request, abort
-import urllib.request, json
+import urllib.request, urllib.error
+import json
 
 app = Flask(__name__)
 
@@ -49,7 +50,11 @@ def bookRead(id):
 # verified valid sizes: small, medium
 @app.route("/book/<int:id>/cover/<string:size>")
 def bookCover(id, size):
-	return readPG("/cache/epub/{0}/pg{0}.cover.{1}.jpg".format(id, size))
+	try:
+		return readPG("/cache/epub/{0}/pg{0}.cover.{1}.jpg".format(id, size))
+	except urllib.error.HTTPError:
+		img = 'noCover{}.jpg'.format(size.capitalize())
+		return app.send_static_file(img)
 
 
 # images referenced in book content
