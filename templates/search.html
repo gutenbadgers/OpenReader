@@ -2,16 +2,34 @@
 
 {% block body %}
 	<h1>Search</h1>
-	<form action="{{ url_for('search') }}" method="POST">
-		<input type="text" name="terms">
+	<form action="{{ url_for('searchPOST') }}" method="POST">
+		<input type="text" name="terms" {% if terms %}value="{{ terms }}"{% endif %} required>
 		<br>
-		<input type="radio" id="title" name="searchType" value="title" checked="checked">
+		<input type="radio" id="title" name="searchType" value="title"
+			{% if searchType == "title" %}checked="checked"{% endif %} required>
 		<label for="title">Title</label><br>
-		<input type="radio" id="author" name="searchType" value="author">
+		<input type="radio" id="author" name="searchType" value="author"
+			{% if searchType == "author" %}checked="checked"{% endif %} required>
 		<label for="author">Author</label><br>
-		<input type="radio" id="category" name="searchType" value="category">
-		<label for="category">Category</label><br>
-
+		<input type="radio" id="category" name="searchType" value="category"
+			{% if searchType == "category" %}checked="checked"{% endif %} required>
+		<label for="category">Category</label>
+		<br>
 		<input type="submit" value="Submit">
 	</form>
+	{% if terms %}
+		<h1>Search results for "{{ terms }}" by {{ searchType }}:</h1>
+		{% if books %}
+			{% for book in books %}
+				<a href="{{ url_for('bookInfo', id=book.id) }}">	
+				<img src="{{ url_for('bookCover', id=book.id, size='small') }}" alt="Book Cover">
+				{{ book.title }}</a>
+				{% if book.authors %}
+					by {{ book.authors[0].name }}</p></div>
+				{% endif %}
+			{% endfor %}
+		{% else %}
+			<p>No results!</p>
+		{% endif %}
+	{% endif %}
 {% endblock %}
