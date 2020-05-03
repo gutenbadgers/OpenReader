@@ -2,9 +2,9 @@
 
 {% block header %}
 	<h1>
-	  {% block title %}
-	  	{% if terms %}{{ terms }} - {% endif %}Search
-	  {% endblock %}
+		{% block title %}
+			{% if terms %}{{ terms }} - {% endif %}Search
+		{% endblock %}
 	</h1>
 {% endblock %}
 
@@ -28,7 +28,7 @@
 		<h1>Search results for "{{ terms }}" by {{ searchType }}:</h1>
 		{% if books %}
 			{% for book in books %}
-				<a href="{{ url_for('books.info', id=book.id) }}">	
+				<a href="{{ url_for('books.info', id=book.id) }}">
 				<img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
 				{{ book.title }}</a>
 				{% if book.authors %}

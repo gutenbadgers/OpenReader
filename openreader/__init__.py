@@ -26,5 +26,6 @@ def create_app():
 
 	from . import books
 	app.register_blueprint(books.bp)
+	app.add_url_rule("/", endpoint="index")
 
 	return app

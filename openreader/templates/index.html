@@ -5,17 +5,11 @@
 {% endblock %}
 
 {% block content %}
-	<h2>Working</h2>
 	<ul>
 		<li><a href="{{ url_for('books.search') }}">Search page</a></li>
-		<li><a href="{{ url_for('books.info', id=98) }}">Pages for single books</a></li>
-		<li><a href="{{ url_for('auth.login') }}">Login and accounts</a></li>
-	</ul>
-	<h2>Not implemented</h2>
-	<ul>
 		<li>
 			<a href="{{ url_for('books.bookshelf') }}">Personalized bookshelves</a>
-			(but it will require you to log in first)
+			(not implemented, but it will require you to log in first)
 		</li>
 	</ul>
 {% endblock %}

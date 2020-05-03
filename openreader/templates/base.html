@@ -4,7 +4,7 @@
 		<title>{% block title %}{% endblock %} - OpenReader</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 		<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-	  	<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+		<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
 		<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
 		<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
 		<link rel="manifest" href="/static/site.webmanifest">
@@ -13,7 +13,7 @@
 		<nav>
 			<h1>OpenReader</h1>
 			<ul>
-				<li><a href="{{  url_for('books.index')  }}">Home</a></li>
+				<li><a href="{{  url_for('index')  }}">Home</a></li>
 				{% if g.user %}
 					<li><span>Hello, {{ g.user['username'] }}!
 						(<a href="{{ url_for('auth.logout') }}">log out</a>)</span>
@@ -23,7 +23,7 @@
 					<li><a href="{{ url_for('auth.login') }}">Log In</a></li>
 				{% endif %}
 			</ul>
-		  </nav>
+		</nav>
 		<hr>
 		<section class="content">
 			<header>
