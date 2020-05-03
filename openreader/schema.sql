@@ -10,5 +10,6 @@ CREATE TABLE user (
 CREATE TABLE bookshelf (
 	book_id INTEGER NOT NULL,
 	user_id INTEGER NOT NULL,
+	UNIQUE (book_id, user_id),
 	FOREIGN KEY (user_id) REFERENCES user (id)
 );

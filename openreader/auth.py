@@ -38,9 +38,9 @@ def load_logged_in_user():
 @bp.route("/register", methods=("GET", "POST"))
 def register():
 	if request.method == "POST":
-		username = request.form["username"]
-		password = request.form["password"]
-		repeat   = request.form[ "repeat" ]
+		username = request.form.get("username")
+		password = request.form.get("password")
+		repeat   = request.form.get( "repeat" )
 		db = get_db()
 		error = None
 
@@ -77,8 +77,8 @@ def register():
 @bp.route("/login", methods=("GET", "POST"))
 def login():
 	if request.method == "POST":
-		username = request.form["username"]
-		password = request.form["password"]
+		username = request.form.get("username")
+		password = request.form.get("password")
 		db = get_db()
 		error = None
 		user = db.execute(

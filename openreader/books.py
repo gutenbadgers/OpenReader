@@ -31,16 +31,37 @@ def index():
 	return render_template("index.html")
 
 
-@bp.route("/bookshelf")
+@bp.route("/bookshelf", methods=["GET", "POST"])
 @login_required
 def bookshelf():
 	db = get_db()
-	book_ids = db.execute(
-		"SELECT book_id FROM bookshelf WHERE user_id = ?",
-		(g.user["id"],)
-	).fetchall()
-	books = [readCatalog("/{}".format(book["book_id"])) for book in book_ids]
-	return render_template("bookshelf.html", books=books)
+	if (request.method == "GET"):
+		book_ids = db.execute(
+			"SELECT book_id FROM bookshelf WHERE user_id = ?",
+			(g.user["id"],)
+		).fetchall()
+		books = [readCatalog("/{}".format(b["book_id"])) for b in book_ids]
+		return render_template("bookshelf.html", books=books)
+	
+	action = request.form.get("action")
+	book_id = request.form.get("book_id")
+	user_id = g.user["id"]
+
+	if not (action in ["add", "delete"] and book_id and user_id):
+		abort(400) # client error: bad request
+
+	if action == "delete":
+		db.execute(
+			"DELETE FROM bookshelf WHERE book_id = ? AND user_id = ?",
+			(book_id, user_id)
+		)
+	if action == "add":
+		db.execute(
+			"INSERT INTO bookshelf (book_id, user_id) VALUES (?, ?)",
+			(book_id, user_id)
+		)
+	db.commit()
+	return redirect(url_for("books.bookshelf"))
 
 
 @bp.route("/book/<int:id>")
@@ -75,7 +96,7 @@ def search():
 	if request.method == "GET":
 		return render_template("search.html")
 
-	searchType = request.form.get('searchType')
+	searchType = request.form.get("searchType")
 	url = ""
 
 	if searchType in ["title", "author", "category"]:
