@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block header %}
+	<h1>
+		{% block title %}Bookshelf{% endblock %}
+	</h1>
+{% endblock %}
+
+{% block content %}
+	{% for book in books %}
+		<a href="{{ url_for('books.info', id=book.id) }}">
+		<img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
+		{{ book.title }}</a>
+		{% if book.authors %}
+			by {{ book.authors[0].name }}
+		{% endif %}
+		{% if not loop.last %}
+		<hr>
+		{% endif %}
+	{% endfor %}
+	{% if not books %}
+		<p>Empty! Why not find some books in a <a href="{{ url_for('books.search') }}">search</a>?</p>
+	{% endif %}
+{% endblock %}

@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for, abort
+	Blueprint, flash, g, redirect, render_template, request, url_for, abort
 )
 import urllib.request, urllib.error
 import json
@@ -34,7 +34,13 @@ def index():
 @bp.route("/bookshelf")
 @login_required
 def bookshelf():
-	abort(501) # server error: unimplemented
+	db = get_db()
+	book_ids = db.execute(
+		"SELECT book_id FROM bookshelf WHERE user_id = ?",
+		(g.user["id"],)
+	).fetchall()
+	books = [readCatalog("/{}".format(book["book_id"])) for book in book_ids]
+	return render_template("bookshelf.html", books=books)
 
 
 @bp.route("/book/<int:id>")
