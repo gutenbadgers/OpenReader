@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
-{% block body %}
-	<h1>{{ book.title }}</h1>
-	<img src="{{ url_for('bookCover', id=book.id, size='medium') }}" alt="Book Cover">
+{% block header %}
+  <h1>{% block title %}{{ book.title }}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+	<img src="{{ url_for('books.cover', id=book.id, size='medium') }}" alt="Book Cover">
 	<br>
 	<p>Authors:</p>
 	<ul>
@@ -17,7 +20,7 @@
 		{% endfor %}
 	</ul>
 	<h2>Read</h2>
-	<a href="{{ url_for('bookRead', id=book.id) }}">Click here to read "{{ book.title }}"</a>
+	<a href="{{ url_for('books.read', id=book.id) }}">Click here to read "{{ book.title }}"</a>
 	<br>
 	<a href="https://www.gutenberg.org/ebooks/{{ book.id }}">Book info on Project Gutenberg</a>
 	<!--a href="https://www.gutenberg.org/files/{{ book.id }}/{{ book.id }}-h/{{ book.id }}-h.htm">Read on Project Gutenberg</a-->

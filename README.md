@@ -8,12 +8,13 @@ For the simplest method, just do this:
 
 ```bash
 pip install flask
+flask init-db
 ```
 
 For an isolated installation, the process is a bit more involved:
 
 ```bash
-# First install the virtual pip environment handler
+# First install the virtual package environment manager
 pip install virtualenv
 
 # Next create a new virtual environment
@@ -26,21 +27,24 @@ source venv/bin/activate
 # Once inside venv, pip will install packages isolated from your system
 pip install flask
 
-# When you're done, exit the virtual environment
+# Then setup your local state
+flask init-db
+
+# When you're done with flask, exit the virtual environment
 deactivate
 ```
 
 ## Usage
 
-If you're using `virtualenv`, then first run `source venv/bin/activate`.
+If you're using `virtualenv`, then first run `source venv/bin/activate`. Run `deactivate` or exit the shell to leave the virtual environment.
 
 Execute `flask run`, then visit http://127.0.0.1:5000 in your browser.
-
-With `virtualenv`, run `deactivate` or just kill the shell when you're done.
 
 ## Contributor Info
 
 * Tabs, not spaces. That's what the tab key is for.
+
+* Use quotes for strings, not apostrophes. The exception is in templates, where it messes up the syntax highlighting to use real quotes.
 
 * Don't commit (even locally) if there are errors or warnings.
 
