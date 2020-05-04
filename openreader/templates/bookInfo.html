@@ -26,11 +26,15 @@
 	<!--a href="https://www.gutenberg.org/files/{{ book.id }}/{{ book.id }}-h/{{ book.id }}-h.htm">Read on Project Gutenberg</a-->
 	<br>
 	{% if g.user %}
-		<form action="{{ url_for('books.bookshelf') }}" method="POST">
-			<input type="hidden" id="action" name="action" value="add">
-			<input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
-			<input type="submit" value="Add to bookshelf">
-		</form>
+		{% if bookmarked %}
+			This book is already in your <a href="{{ url_for('books.bookshelf') }}">bookshelf</a>!
+		{% else %}
+			<form action="{{ url_for('books.bookshelf') }}" method="POST">
+				<input type="hidden" id="action" name="action" value="add">
+				<input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
+				<input type="submit" value="Add to bookshelf">
+			</form>
+		{% endif %}
 	{% else %}
 		<a href="{{ url_for('auth.login') }}">Log in</a> to add to your bookshelf.
 	{% endif %}
