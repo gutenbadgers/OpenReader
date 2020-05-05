@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block header %}
+	<h1>{% block title %}Home{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+	<ul>
+		<li><a href="{{ url_for('books.search') }}">Search page</a></li>
+		<li><a href="{{ url_for('books.bookshelf') }}">Personal bookshelf</a></li>
+	</ul>
+{% endblock %}

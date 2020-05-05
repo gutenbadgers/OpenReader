@@ -1,8 +1,15 @@
 {% extends "base.html" %}
 
-{% block body %}
-	<h1>Search</h1>
-	<form action="{{ url_for('searchPOST') }}" method="POST">
+{% block header %}
+	<h1>
+		{% block title %}
+			{% if terms %}{{ terms }} - {% endif %}Search
+		{% endblock %}
+	</h1>
+{% endblock %}
+
+{% block content %}
+	<form action="{{ url_for('books.search') }}" method="POST">
 		<input type="text" name="terms" {% if terms %}value="{{ terms }}"{% endif %} required>
 		<br>
 		<input type="radio" id="title" name="searchType" value="title"
@@ -21,11 +28,14 @@
 		<h1>Search results for "{{ terms }}" by {{ searchType }}:</h1>
 		{% if books %}
 			{% for book in books %}
-				<a href="{{ url_for('bookInfo', id=book.id) }}">	
-				<img src="{{ url_for('bookCover', id=book.id, size='small') }}" alt="Book Cover">
+				<a href="{{ url_for('books.info', id=book.id) }}">
+				<img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
 				{{ book.title }}</a>
 				{% if book.authors %}
-					by {{ book.authors[0].name }}</p></div>
+					by {{ book.authors[0].name }}
+				{% endif %}
+				{% if not loop.last %}
+				<hr>
 				{% endif %}
 			{% endfor %}
 		{% else %}

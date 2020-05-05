@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block header %}
+	<h1>
+		{% block title %}Bookshelf{% endblock %}
+	</h1>
+{% endblock %}
+
+{% block content %}
+	{% for book in books %}
+		<a href="{{ url_for('books.info', id=book.id) }}">
+		<img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
+		{{ book.title }}</a>
+		{% if book.authors %}
+			by {{ book.authors[0].name }}
+		{% endif %}
+		<form action="{{ url_for('books.bookshelf') }}" method="POST">
+			<input type="hidden" id="action" name="action" value="delete">
+			<input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
+			<input type="submit" value="Remove from bookshelf">
+		</form>
+		{% if not loop.last %}
+		<hr>
+		{% endif %}
+		<p>Need more books? Try doing a <a href="{{ url_for('books.search') }}">search</a><!DOCTYPE html></p>
+	{% endfor %}
+	{% if not books %}
+		<p>Empty! Why not find some books with a <a href="{{ url_for('books.search') }}">search</a>?</p>
+	{% endif %}
+{% endblock %}

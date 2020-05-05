@@ -1,0 +1,15 @@
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS bookshelf;
+
+CREATE TABLE user (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	username TEXT UNIQUE NOT NULL,
+	password TEXT NOT NULL
+);
+
+CREATE TABLE bookshelf (
+	book_id INTEGER NOT NULL,
+	user_id INTEGER NOT NULL,
+	UNIQUE (book_id, user_id),
+	FOREIGN KEY (user_id) REFERENCES user (id)
+);
