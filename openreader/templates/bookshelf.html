@@ -10,8 +10,8 @@
     <table id="bookTable" style="border: 1px solid black; border-collapse: collapse">
         <tr>
             <th></th>
-            <th style="border: 1px solid black; border-collapse: collapse" onclick="sortTable(1)"> Title </th>
-            <th style="border: 1px solid black; border-collapse: collapse" onclick="sortTable(2)"> Author </th>
+            <th style="border: 1px solid black; border-collapse: collapse" onclick="sortTable(1)" id="title"> Title </th>
+            <th style="border: 1px solid black; border-collapse: collapse" onclick="sortTable(2)" id="author"> Author </th>
         </tr>
         {% for book in books %}
         <tr>
@@ -104,6 +104,28 @@
 					}
 				}
 			}
+
+			// Add symbol to html to display if it is ascending or descending order
+			var header;
+			// If title was clicked
+			if (n == 1) {
+				document.getElementById("author").textContent = "Author";		// Reset Author header if Title header was clicked
+				header = document.getElementById("title");
+				if (dir == "asc") {
+					header.textContent = "Title ▲";
+				} else if (dir == "desc")  {
+					header.textContent = "Title ▼";
+				}
+			} else if (n == 2) {	// If author was clicked
+				document.getElementById("title").textContent = "Title";			// Reset Title header if Author header was clicked
+				header = document.getElementById("author");
+				if (dir == "asc") {
+					header.textContent = "Author ▲";
+				} else if (dir == "desc") {
+					header.textContent = "Author ▼";
+				}
+			}
+			
 		}
 	</script>
 {% endblock %}
