@@ -7,24 +7,103 @@
 {% endblock %}
 
 {% block content %}
-	{% for book in books %}
-		<a href="{{ url_for('books.info', id=book.id) }}">
-		<img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
-		{{ book.title }}</a>
-		{% if book.authors %}
-			by {{ book.authors[0].name }}
-		{% endif %}
-		<form action="{{ url_for('books.bookshelf') }}" method="POST">
-			<input type="hidden" id="action" name="action" value="delete">
-			<input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
-			<input type="submit" value="Remove from bookshelf">
-		</form>
-		{% if not loop.last %}
-		<hr>
-		{% endif %}
-		<p>Need more books? Try doing a <a href="{{ url_for('books.search') }}">search</a><!DOCTYPE html></p>
-	{% endfor %}
+    <table id="bookTable" style="border: 1px solid black; border-collapse: collapse">
+        <tr>
+            <th></th>
+            <th style="border: 1px solid black; border-collapse: collapse" onclick="sortTable(1)"> Title </th>
+            <th style="border: 1px solid black; border-collapse: collapse" onclick="sortTable(2)"> Author </th>
+        </tr>
+        {% for book in books %}
+        <tr>
+            <td style="border: 1px solid black; border-collapse: collapse">
+                <a href="{{ url_for('books.info', id=book.id) }}">
+                    <img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
+                </a>
+            </td>
+            <td style="border: 1px solid black; border-collapse: collapse">
+                {{ book.title }}
+            </td>
+            <td style="border: 1px solid black; border-collapse: collapse">
+                {% if book.authors %}
+                    {{ book.authors[0].name }}
+                {% endif %}
+            </td>
+            <td style="border: 1px solid black; border-collapse: collapse">
+                <form action="{{ url_for('books.bookshelf') }}" method="POST">
+                    <input type="hidden" id="action" name="action" value="delete">
+                    <input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
+                    <input type="submit" value="Remove from bookshelf">
+                </form>
+            </td>
+            {% if not loop.last %}
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+<!-- removed unneccessary header row, and made it such that the "Need more books" only appears once, at the end of a bookshelf with books-->
+    {% if books %}
+        <p>Need more books? Try doing a <a href="{{ url_for('books.search') }}">search</a><!DOCTYPE html>
+        </p>
+    {% endif %}
 	{% if not books %}
 		<p>Empty! Why not find some books with a <a href="{{ url_for('books.search') }}">search</a>?</p>
 	{% endif %}
+
+	<script>
+		// Code adapted from w3schools.com
+		function sortTable(n) {
+			var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+			table = document.getElementById("bookTable");
+			switching = true;
+
+			// Set the sorting direction to ascending:
+			dir = "asc";
+
+			// Make a loop that will continue until no switching has been done
+			while (switching) {
+				// Start by saying: no switching is done:
+				switching = false;
+				rows = table.rows;
+
+				// Loop through all table rows (except the first, which contains table headers)
+				for (i = 1; i < (rows.length - 1); i++) {
+					// Start by saying there should be no switching:
+					shouldSwitch = false;
+
+					// Get the two elements you want to compare, one from current row and one from the next
+					x = rows[i].getElementsByTagName("TD")[n];
+					y = rows[i + 1].getElementsByTagName("TD")[n];
+
+					// Check if the two rows should switch place, based on the direction, asc or desc
+					if (dir == "asc") {
+						if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+							// If so, mark as a switch and break the loop:
+							shouldSwitch = true;
+							break;
+						}
+					} else if (dir == "desc") {
+						if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+							// If so, mark as a switch and break the loop:
+							shouldSwitch = true;
+							break;
+						}
+					}
+				}
+				if (shouldSwitch) {
+					// If a switch has been marked, make the switch and mark that a switch has been done
+					rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+					switching = true;
+
+					// Each time a switch is done, increase this count by 1:
+					switchcount ++;
+				} else {
+					// If no switching has been done AND the direction is "asc", set the direction to "desc" and run the while loop again.
+					if (switchcount == 0 && dir == "asc") {
+						dir = "desc";
+						switching = true;
+					}
+				}
+			}
+		}
+	</script>
 {% endblock %}
