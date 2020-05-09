@@ -10,8 +10,8 @@
 <table id="bookTable" style="border: 1px solid black; border-collapse: collapse">
     <tr>
         <th style="border-width: 1px; border-style: solid solid none; border-color: black; border-collapse: collapse"></th>
-        <th style="border-width: 1px; border-style: solid solid none; border-color: black; border-collapse: collapse" onclick="sortTable(1)" id="title"> Title  ↕ </th>
-        <th style="border-width: 1px; border-style: solid solid none; border-color: black; border-collapse: collapse" onclick="sortTable(2)" id="author"> Author  ↕ </th>
+        <th style="border-width: 1px; border-style: solid solid none; border-color: black; border-collapse: collapse" onclick="sortTable(1)" id="bsTitle"> Title  ↕ </th>
+        <th style="border-width: 1px; border-style: solid solid none; border-color: black; border-collapse: collapse" onclick="sortTable(2)" id="bsAuthor"> Author  ↕ </th>
         <th style="border-width: 1px; border-style: solid solid none; border-color: black; border-collapse: collapse"></th>
     </tr>
     {% for book in books %}
@@ -111,16 +111,16 @@
 			var header;
 			// If title was clicked
 			if (n == 1) {
-				document.getElementById("author").textContent = "Author  ↕";		// Reset Author header if Title header was clicked
-				header = document.getElementById("title");
+				document.getElementById("bsAuthor").textContent = "Author  ↕";		// Reset Author header if Title header was clicked
+				header = document.getElementById("bsTitle");
 				if (dir == "asc") {
 					header.textContent = "Title  ↑";
 				} else if (dir == "desc")  {
 					header.textContent = "Title  ↓";
 				}
 			} else if (n == 2) {	// If author was clicked
-				document.getElementById("title").textContent = "Title  ↕";			// Reset Title header if Author header was clicked
-				header = document.getElementById("author");
+				document.getElementById("bsTitle").textContent = "Title  ↕";			// Reset Title header if Author header was clicked
+				header = document.getElementById("bsAuthor");
 				if (dir == "asc") {
 					header.textContent = "Author  ↑";
 				} else if (dir == "desc") {
