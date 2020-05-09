@@ -27,17 +27,29 @@
 	{% if terms %}
 		<h1>Search results for "{{ terms }}" by {{ searchType }}:</h1>
 		{% if books %}
-			{% for book in books %}
-				<a href="{{ url_for('books.info', id=book.id) }}">
-				<img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
-				{{ book.title }}</a>
-				{% if book.authors %}
-					by {{ book.authors[0].name }}
-				{% endif %}
-				{% if not loop.last %}
-				<hr>
-				{% endif %}
-			{% endfor %}
+        <table style="border: 1px black solid; border-collapse: collapse">
+            {% for book in books %}
+            <tr>
+                <td style="border: 1px black solid; border-collapse: collapse">
+                    <a href="{{ url_for('books.info', id=book.id) }}">
+                        <img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
+                    </a>
+                </td>
+                <td style="border: 1px black solid; border-collapse: collapse; max-width: 50em">
+                    {{ book.title }}
+                </td>
+                <td style="border: 1px black solid; border-collapse: collapse">
+                    {% if book.authors %}
+                        by {{ book.authors[0].name }}
+                    {% endif %}
+                </td>
+                <td style="border: 1px black solid; border-collapse: collapse">
+                    <!-- add to bookshelf directly from results-->
+                    add to bookshelf
+                </td>
+            {% endfor %}
+            </tr>
+        </table>
 		{% else %}
 			<p>No results!</p>
 		{% endif %}
