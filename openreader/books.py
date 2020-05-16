@@ -1,10 +1,7 @@
 from flask import (
 	Blueprint, flash, g, redirect, render_template, request, url_for, abort
 )
-import urllib.request, urllib.error
-import json
-
-from werkzeug.exceptions import abort
+import urllib
 
 from openreader.auth import login_required
 from openreader.db import get_db
