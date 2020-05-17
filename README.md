@@ -7,20 +7,21 @@ An open-source e-reader for out-of-copyright books written in Python 3.
 For the simplest method, just do this:
 
 ```bash
-pip install flask
+pip install flask # or use pip3 if Python 2 is your system default
 flask init-db
 ```
 
 For an isolated installation, the process is a bit more involved:
 
 ```bash
-# First install the virtual package environment manager
+# First install the isolated package environment
+# manager if it isn't already available
 pip install virtualenv
 
 # Next create a new virtual environment
-virtualenv venv
+virtualenv --python=python3 venv
 
-# Activate the virtual environment in bash.
+# Activate the virtual environment in Bash.
 # There are other scripts for other shells, like activate.fish and .ps1
 source venv/bin/activate
 
