@@ -1,5 +1,9 @@
 ﻿{% extends "base.html" %}
 
+{% block style %} 
+<link rel="stylesheet" href="{{ url_for('static', filename='results.css') }}"> 
+{% endblock %}
+
 {% block header %}
 	<h1>
 		{% block title %}
@@ -13,13 +17,22 @@
 		<input type="text" name="terms" {% if terms %}value="{{ terms }}"{% endif %} required>
 		<br>
 		<input type="radio" id="title" name="searchType" value="title"
-			{% if searchType == "title" %}checked="checked"{% endif %} required>
+			{% if searchType == "title" %}
+				checked="checked"
+			{% endif %} 
+			required>
 		<label for="title">Title</label><br>
 		<input type="radio" id="author" name="searchType" value="author"
-			{% if searchType == "author" %}checked="checked"{% endif %} required>
+			{% if searchType == "author" %}
+				checked="checked"
+			{% endif %} 
+			required>
 		<label for="author">Author</label><br>
 		<input type="radio" id="category" name="searchType" value="category"
-			{% if searchType == "category" %}checked="checked"{% endif %} required>
+			{% if searchType == "category" %}
+				checked="checked"
+			{% endif %} 
+			required>
 		<label for="category">Category</label>
 		<br>
 		<input type="submit" value="Submit">
@@ -27,30 +40,30 @@
 	{% if terms %}
 		<h1>Search results for "{{ terms }}" by {{ searchType }}:</h1>
 		{% if books %}
-        <table id="bookTable" style="border: 1px black solid; border-collapse: collapse" >
+        <table id="bookTable" >
             <tr>
-                <th style="border-width: 1px; border-style: solid solid none; border-color: black; border-collapse: collapse"></th>
-                <th style="border-width: 1px; border-style: solid solid none; border-color: black; border-collapse: collapse" onclick="sortTable(1)" id="title"> Title  ↕ </th>
-				<th style="border-width: 1px; border-style: solid solid none; border-color: black; border-collapse: collapse" onclick="sortTable(2)" id="author"> Author  ↕ </th>
-                <th style="border-width: 1px; border-style: solid solid none; border-color: black; border-collapse: collapse"></th>
+                <th></th>
+                <th onclick="sortTable(1)" id="title"> Title  ↕ </th>
+				<th onclick="sortTable(2)" id="author"> Author  ↕ </th>
+                <th></th>
 
             </tr>
             {% for book in books %}
             <tr>
-                <td style="border: 1px black solid; border-collapse: collapse">
+                <td>
                     <a href="{{ url_for('books.info', id=book.id) }}">
                         <img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
                     </a>
                 </td>
-                <td style="border: 1px black solid; border-collapse: collapse; max-width: 50em">
+                <td>
                     {{ book.title }}
                 </td>
-                <td style="border: 1px black solid; border-collapse: collapse">
+                <td>
                     {% if book.authors %}
                         {{ book.authors[0].name }}
                     {% endif %}
                 </td>
-                <td style="border: 1px black solid; border-collapse: collapse">
+                <td>
                     {% if g.user %}
                     {% if bookmarked %}
                     This book is already in your <a href="{{ url_for('books.bookshelf') }}">bookshelf</a>!

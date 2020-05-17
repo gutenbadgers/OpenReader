@@ -52,25 +52,20 @@ function sortTable(n) {
             }
         }
     }
-
-    // Add symbol to html to display if it is ascending or descending order
-    var header;
     // If title was clicked
     if (n == 1) {
         document.getElementById("author").textContent = "Author  ↕";		// Reset Author header if Title header was clicked
-        header = document.getElementById("title");
         if (dir == "asc") {
-            header.textContent = "Title  ↑";
+            document.getElementById("title").textContent = "Title  ↑";
         } else if (dir == "desc")  {
-            header.textContent = "Title  ↓";
+            document.getElementById("title").textContent = "Title  ↓";
         }
     } else if (n == 2) {	// If author was clicked
         document.getElementById("title").textContent = "Title  ↕";			// Reset Title header if Author header was clicked
-        header = document.getElementById("author");
         if (dir == "asc") {
-            header.textContent = "Author  ↑";
+            document.getElementById("author").textContent = "Author  ↑";
         } else if (dir == "desc") {
-            header.textContent = "Author  ↓";
+            document.getElementById("author").textContent = "Author  ↓";
         }
     }
 

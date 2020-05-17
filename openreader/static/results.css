@@ -1,0 +1,18 @@
+table {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th {
+    border-width: 1px;
+    border-style: none solid solid;
+    border-color: black;
+    border-collapse: collapse;
+}
+
+td {
+    border-width: 1px;
+    border-style: none solid solid;
+    border-color: black;
+    border-collapse: collapse;
+}
