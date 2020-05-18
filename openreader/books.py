@@ -102,27 +102,15 @@ def search():
 	if searchType not in ["title", "author", "category"]:
 		abort(400) # client error: invalid form
 
-	url = "/search/{}/".format(searchType)
-	url += urllib.parse.quote(request.form.get("terms"))
+	url = url_for("books.searchResults", searchType=searchType,
+		terms=urllib.parse.quote(request.form.get("terms")))
 	return redirect(url, code=303)
 
 
-@bp.route("/search/title/<string:terms>")
-def searchTitle(terms):
-	books = catalog.search("title", terms)
-	searchType = "title"
-	return render_template("search.html", **locals())
+@bp.route("/search/<string:searchType>/<string:terms>")
+def searchResults(searchType, terms):
+	if searchType not in ["title", "author", "category"]:
+		abort(400) # client error: invalid form
 
-
-@bp.route("/search/author/<string:terms>")
-def searchAuthor(terms):
-	books = catalog.search("author", terms)	
-	searchType = "author"
-	return render_template("search.html", **locals())
-
-
-@bp.route("/search/category/<string:terms>")
-def searchCategory(terms):
-	books = catalog.search("category", terms)
-	searchType = "category"
+	books = catalog.search(searchType, terms)
 	return render_template("search.html", **locals())

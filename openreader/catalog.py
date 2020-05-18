@@ -42,7 +42,7 @@ def get_content_image(id, filename):
 
 
 # return a list of book metadata
-# Not: title and author search types artificially limit results to matches
+# Note: title and author search types artificially limit results to matches
 def search(type, terms):
 	if type == "title":
 		results = _read_catalog("?search=" + urllib.parse.quote(terms))["results"]
@@ -56,4 +56,3 @@ def search(type, terms):
 		return _read_catalog("?topic=" + urllib.parse.quote(terms))["results"]
 	else:
 		return None
-
