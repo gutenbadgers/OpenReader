@@ -8,10 +8,10 @@ def create_app():
 	
 	app.config.from_mapping(
 		SECRET_KEY="dev",
-		DATABASE=os.path.join(app.instance_path, "openreader.sqlite")
+		DATABASE=os.path.join(app.instance_path, "openreader.sqlite"),
+		CACHE=os.path.join(app.instance_path, "cache"),
+		CACHESIZE=(1048576*50) # 50 megabytes
 	)
-
-	app.config.from_pyfile("config.py", silent=True)
 
 	try:
 		os.makedirs(app.instance_path)
@@ -20,6 +20,9 @@ def create_app():
 
 	from . import db
 	db.init_app(app)
+
+	from . import cache
+	cache.init_app(app)
 
 	from . import auth
 	app.register_blueprint(auth.bp)
