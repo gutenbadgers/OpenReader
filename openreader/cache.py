@@ -8,7 +8,7 @@ from flask.cli import with_appcontext
 
 _path     = lambda: current_app.config["CACHE"]
 _max_size = lambda: current_app.config["CACHESIZE"]
-_path_to  = lambda f: os.path.join(_path(), f)
+_path_to  = lambda f: os.path.join(_path(), str(f))
 _exists   = lambda: os.path.isdir(_path())
 _contents = lambda: [] if not _exists() else \
 		[f for f in os.listdir(_path()) if os.path.isfile(_path_to(f))]
@@ -36,8 +36,9 @@ def get(name):
 		with open(_path_to(name)) as f:
 			return f.read()
 
+# expects bytes for content
 def add(name, content):
-	size = len(content.encode("utf-8"))
+	size = len(content)
 
 	if size > _max_size():
 		return
@@ -45,7 +46,7 @@ def add(name, content):
 
 	if not os.path.exists(_path()):
 		os.makedirs(_path())
-	with open(_path_to(name), "w") as f:
+	with open(_path_to(name), "wb") as f:
 		f.write(content)
 
 

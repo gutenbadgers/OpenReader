@@ -1,6 +1,8 @@
 import urllib.request, urllib.error
 import json
 
+import openreader.cache as cache
+
 # https://github.com/garethbjohnson/gutendex#api
 def _read_catalog(route):
 	url = "http://gutendex.com/books" + route
@@ -12,6 +14,7 @@ def _read_catalog(route):
 
 
 # https://www.gutenberg.org/wiki/Gutenberg:Information_About_Robot_Access_to_our_Pages
+# returns bytes, not a string
 def _read_PG(route):
 	url = "https://www.gutenberg.org" + route
 	try:
@@ -33,7 +36,12 @@ def get_cover(id, size):
 
 # return book content
 def get_content(id):
-	return _read_PG("/files/{0}/{0}-h/{0}-h.htm".format(id))
+	if cache.contains(id):
+		print("returning cached item:", id)
+		return cache.get(id)
+	content = _read_PG("/files/{0}/{0}-h/{0}-h.htm".format(id))
+	cache.add(id, content)
+	return content
 
 
 # return images referenced in book content
