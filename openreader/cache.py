@@ -13,6 +13,7 @@ _exists   = lambda: os.path.isdir(_path())
 _contents = lambda: [] if not _exists() else \
 		[f for f in os.listdir(_path()) if os.path.isfile(_path_to(f))]
 _size     = lambda: sum(os.path.getsize(_path_to(f)) for f in _contents())
+_age      = lambda f: os.path.getctime(_path_to(f))
 
 def _clear():
 	if os.path.exists(_path()):
@@ -24,7 +25,7 @@ def prune(extra_room=0):
 		return
 
 	while _contents() and _size() > _max_size() - extra_room:
-		oldest = min(_contents(), key=lambda f: os.path.getctime(_path_to(f)))
+		oldest = min(_contents(), key=_age)
 		os.remove(_path_to(oldest))
 
 def contains(name):
