@@ -39,7 +39,13 @@ deactivate
 
 If you're using `virtualenv`, then first run `source venv/bin/activate`. Run `deactivate` or exit the shell to leave the virtual environment.
 
-Execute `flask run`, then visit http://127.0.0.1:5000 in your browser.
+### Commands
+
+* `flask run` starts the server. Visit http://127.0.0.1:5000 in your browser.
+
+* `flask init-db` creates or clears the database that stores user accounts.
+
+* `flask clear-cache` deletes the cache folder. It's recreated automatically when needed.
 
 ## Contributor Info
 
@@ -50,3 +56,5 @@ Execute `flask run`, then visit http://127.0.0.1:5000 in your browser.
 * Don't commit (even locally) if there are errors or warnings.
 
 * Flask has a built-in development server that supports auto-reload on source change and shows an interactive debugger on errors. Run it with `FLASK_ENV=development flask run`.
+
+* Flask also has a shell that's useful for debugging. Use `flask shell`, then access modules after importing them: `import openreader.cache as cache`. Once imported, you can test functions interactively: `cache._contents()`
