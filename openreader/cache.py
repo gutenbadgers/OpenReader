@@ -36,16 +36,21 @@ def get(name):
 		with open(_path_to(name)) as f:
 			return f.read()
 
-# expects bytes for content
 def add(name, content):
+	if not content:
+		print("Can't cache nothing! {} has no content.".format(name))
+		return
+
 	size = len(content)
 
 	if size > _max_size():
+		print("{} is larger than the cache. Ignoring.".format(name))
 		return
 	prune(size)
 
 	if not os.path.exists(_path()):
 		os.makedirs(_path())
+
 	with open(_path_to(name), "wb") as f:
 		f.write(content)
 

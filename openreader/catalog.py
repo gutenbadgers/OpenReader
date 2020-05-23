@@ -3,6 +3,8 @@ import json
 
 import openreader.cache as cache
 
+_page_lines = 30
+
 # https://github.com/garethbjohnson/gutendex#api
 def _read_catalog(route):
 	url = "http://gutendex.com/books" + route
@@ -34,54 +36,33 @@ def get_cover(id, size):
 	return _read_PG("/cache/epub/{0}/pg{0}.cover.{1}.jpg".format(id, size))
 
 
-# Extracts <head> from book
-def get_head(str):
-	head_1_index = str.find("<head>")
-	head_2_index = str.find("</head>")
-	return str[head_1_index:head_2_index + 7]
-
-
 # return book content
 def get_content(id):
 	if cache.contains(id):
 		print("returning cached item:", id)
 		return cache.get(id)
-	# content = _read_PG("/files/{0}/{0}.txt".format(id))
-	content = _read_PG("/files/{0}/{0}-h/{0}-h.htm".format(id))
+	content = _read_PG("/files/{0}/{0}-0.txt".format(id))
+	#content = _read_PG("/files/{0}/{0}-h/{0}-h.htm".format(id))
 	cache.add(id, content)
 	return content
+	
 
-# return book content by page
+# return book content by page and number of pages
 def get_content_page(id, page):
 	full_book = get_content(id)
-	# print(get_content(id))
-	html_head = get_head(full_book)						# HTML <head> tag as a string
-	book_page = []										# Array where each element = page
-	space_count = 0										# Count of space characters to determine page breaks
-	newline_count = 0									# Count of newline characters
+	if not full_book:
+		return None
 
-	starting_index = full_book.find("<body>")
-	# starting_index = 0
-	slice_index = starting_index
-	for i in range(starting_index, len(full_book)):
-		# if full_book[i] == " ":
-			# space_count += 1
-		if full_book[i] == "\n":
-			newline_count += 1
+	lines = full_book.split("\n")
+	first_index = _page_lines * (page-1)
+	last_index  = _page_lines * page
+	#num_pages  = -(-len(lines) // _page_lines)
 
-		# break document into a new page if there are 566 pages OR 50 new lines. Whichever comes first.
-		# if space_count >= 566:							# This will determine how many words per page
-			# book_page.append(full_book[slice_index:i])
-			# slice_index = i
-			# space_count = 0
+	if first_index < 0 or last_index > len(lines):
+		return None
 
-		if newline_count >= 50:
-			book_page.append(full_book[slice_index:i])
-			slice_index = i
-			newline_count = 0
-
-	return [html_head, book_page[page - 1], len(book_page)]
-	# return [book_page[page - 1], len(book_page)]
+	page = lines[_page_lines * (page-1) : _page_lines * page]
+	return "\n".join(page)
 
 
 # return images referenced in book content
