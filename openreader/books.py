@@ -117,7 +117,7 @@ def search():
 		abort(400) # client error: invalid form
 
 	url = url_for("books.searchResults", searchType=searchType,
-		terms=urllib.parse.quote(request.form.get("terms")))
+		terms=request.form.get("terms"))
 	return redirect(url, code=303)
 
 
