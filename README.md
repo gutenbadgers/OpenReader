@@ -57,8 +57,4 @@ If you're using `virtualenv`, then first run `source venv/bin/activate`. Run `de
 
 * Flask has a built-in development server that supports auto-reload on source change and shows an interactive debugger on errors. Run it with `FLASK_ENV=development flask run`.
 
-<<<<<<< HEAD
-* Flask also has a shell that's useful for debugging. Use `flask shell`, then access modules like so: `import openreared.cache`, `openreader.cache._contents()`.
-=======
 * Flask also has a shell that's useful for debugging. Use `flask shell`, then access modules after importing them: `import openreader.cache as cache`. Once imported, you can test functions interactively: `cache._contents()`
->>>>>>> 068a99f6e031ccf0e1b04080b4dbfda7d4a47e77
