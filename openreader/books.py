@@ -74,7 +74,24 @@ def info(id):
 
 @bp.route("/book/<int:id>/read")
 def read(id):
+	# print(catalog.get_head(catalog.get_content(id)))
 	return catalog.get_content(id)
+
+# Route to get book page
+@bp.route("/book/<int:id>/read/<int:page>")
+def readPage(id, page):
+	document = catalog.get_content_page(id, page)
+	if page < 1:	# fail safe to keep user from falling out of page ranges
+		return redirect(url_for("books.readPage", id=id, page=1))
+
+	previousPage = page - 1
+	nextPage = page + 1
+
+	if nextPage == document[2]+1:
+		nextPage = 1					# reset next page to 1 if user has finished the book
+
+	
+	return render_template("bookPage.html", head=document[0], body=document[1], previousPage=previousPage, nextPage=nextPage, id=id)
 
 
 @bp.route("/book/<int:id>/cover/<string:size>")
