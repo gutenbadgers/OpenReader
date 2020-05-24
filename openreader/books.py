@@ -116,7 +116,7 @@ def search():
 
 	searchType = request.form.get("searchType")
 
-	if searchType not in ["title", "author", "category"]:
+	if searchType not in ["title-author", "category"]:
 		abort(400) # client error: invalid form
 
 	url = url_for("books.searchResults", searchType=searchType,
@@ -126,7 +126,7 @@ def search():
 
 @bp.route("/search/<string:searchType>/<string:terms>")
 def searchResults(searchType, terms):
-	if searchType not in ["title", "author", "category"]:
+	if searchType not in ["title-author", "category"]:
 		abort(400) # client error: invalid form
 
 	books = catalog.search(searchType, terms)

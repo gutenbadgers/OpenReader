@@ -16,18 +16,12 @@
 	<form action="{{ url_for('books.search') }}" method="POST">
 		<input type="text" name="terms" {% if terms %}value="{{ terms }}"{% endif %} required>
 		<br>
-		<input type="radio" id="title" name="searchType" value="title"
-			{% if searchType == "title" %}
+		<input type="radio" id="title-author" name="searchType" value="title-author"
+			{% if searchType == "title-author" %}
 				checked="checked"
 			{% endif %} 
 			required>
-		<label for="title">Title</label><br>
-		<input type="radio" id="author" name="searchType" value="author"
-			{% if searchType == "author" %}
-				checked="checked"
-			{% endif %} 
-			required>
-		<label for="author">Author</label><br>
+		<label for="title">Title/Author</label><br>
 		<input type="radio" id="category" name="searchType" value="category"
 			{% if searchType == "category" %}
 				checked="checked"
@@ -40,48 +34,47 @@
 	{% if terms %}
 		<h1>Search results for "{{ terms }}" by {{ searchType }}:</h1>
 		{% if books %}
-        <table id="bookTable" >
-            <tr>
-                <th></th>
-                <th onclick="sortTable(1)" id="title"> Title  ↕ </th>
+		<table id="bookTable" >
+			<tr>
+				<th></th>
+				<th onclick="sortTable(1)" id="title"> Title  ↕ </th>
 				<th onclick="sortTable(2)" id="author"> Author  ↕ </th>
-                <th></th>
+				<th></th>
+			</tr>
+			{% for book in books %}
+			<tr>
+				<td>
+					<a href="{{ url_for('books.info', id=book.id) }}">
+						<img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
+					</a>
+				</td>
+				<td>
+					{{ book.title }}
+				</td>
+				<td>
+					{% if book.authors %}
+						{{ book.authors[0].name }}
+					{% endif %}
+				</td>
+				<td>
+					{% if g.user %}
+					{% if bookmarked %}
+					This book is already in your <a href="{{ url_for('books.bookshelf') }}">bookshelf</a>!
+					{% else %}
+					<form action="{{ url_for('books.bookshelf') }}" method="POST">
+						<input type="hidden" id="action" name="action" value="add">
+						<input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
+						<input type="submit" value="Add to bookshelf">
+					</form>
+					{% endif %}
+					{% else %}
+					<a href="{{ url_for('auth.login') }}">Log in</a> to add to your bookshelf.
+					{% endif %}
+				</td>
 
-            </tr>
-            {% for book in books %}
-            <tr>
-                <td>
-                    <a href="{{ url_for('books.info', id=book.id) }}">
-                        <img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
-                    </a>
-                </td>
-                <td>
-                    {{ book.title }}
-                </td>
-                <td>
-                    {% if book.authors %}
-                        {{ book.authors[0].name }}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if g.user %}
-                    {% if bookmarked %}
-                    This book is already in your <a href="{{ url_for('books.bookshelf') }}">bookshelf</a>!
-                    {% else %}
-                    <form action="{{ url_for('books.bookshelf') }}" method="POST">
-                        <input type="hidden" id="action" name="action" value="add">
-                        <input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
-                        <input type="submit" value="Add to bookshelf">
-                    </form>
-                    {% endif %}
-                    {% else %}
-                    <a href="{{ url_for('auth.login') }}">Log in</a> to add to your bookshelf.
-                    {% endif %}
-                </td>
-
-            {% endfor %}
-            </tr>
-        </table>
+			{% endfor %}
+			</tr>
+		</table>
 		{% else %}
 			<p>No results!</p>
 		{% endif %}
