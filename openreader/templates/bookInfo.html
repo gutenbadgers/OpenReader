@@ -20,22 +20,26 @@
 		{% endfor %}
 	</ul>
 	<h2>Read</h2>
-	<a href="{{ url_for('books.read', id=book.id) }}">Click here to read "{{ book.title }}"</a>
-	<br>
-	<a href="https://www.gutenberg.org/ebooks/{{ book.id }}">Book info on Project Gutenberg</a>
-	<!--a href="https://www.gutenberg.org/files/{{ book.id }}/{{ book.id }}-h/{{ book.id }}-h.htm">Read on Project Gutenberg</a-->
-	<br>
-	{% if g.user %}
-		{% if bookmarked %}
-			This book is already in your <a href="{{ url_for('books.bookshelf') }}">bookshelf</a>!
+	<p>
+		<a href="{{ url_for('books.read', id=book.id) }}">Click here to read "{{ book.title }}"</a>
+		<br>
+		Or you can <a href="{{ url_for('books.readPage', id=book.id, page=1) }}">jump to page {{ 1 }}</a-->
+	</p>
+	<p>
+		{% if g.user %}
+			{% if bookmarked %}
+				This book is already in your <a href="{{ url_for('books.bookshelf') }}">bookshelf</a>!
+			{% else %}
+				<form action="{{ url_for('books.bookshelf') }}" method="POST">
+					<input type="hidden" id="action" name="action" value="add">
+					<input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
+					<input type="submit" value="Add to bookshelf">
+				</form>
+			{% endif %}
 		{% else %}
-			<form action="{{ url_for('books.bookshelf') }}" method="POST">
-				<input type="hidden" id="action" name="action" value="add">
-				<input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
-				<input type="submit" value="Add to bookshelf">
-			</form>
+			<a href="{{ url_for('auth.login') }}">Log in</a> to add to your bookshelf.
 		{% endif %}
-	{% else %}
-		<a href="{{ url_for('auth.login') }}">Log in</a> to add to your bookshelf.
-	{% endif %}
+	</p>
+	<br>
+	Development only: <a href="https://www.gutenberg.org/ebooks/{{ book.id }}">book info on Project Gutenberg</a>
 {% endblock %}

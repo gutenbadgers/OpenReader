@@ -31,13 +31,23 @@
 			right: 100px;
 		}
 	</style>
-		{{ head }}
-	<div>
-		<pre>
+	<head>
+		<title>Read - OpenReader</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+		<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+		<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+		<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+		<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+		<link rel="manifest" href="/static/site.webmanifest">
+	</head>
+	<body>
+		<div>
+			<pre>
 {{ body }}
-		</pre>
-	</div>
-	<a href="{{ url_for(request.endpoint, id=id, page=(page-1)) }}" class="pageButton" id="left" style="text-decoration: none; color: white;">🡄</a>
-	<a href="{{ url_for(request.endpoint, id=id, page=(page+1)) }}" class="pageButton" id="right" style="text-decoration: none; color: white;">🡆</a>
+			</pre>
+		</div>
+		<a href="{{ url_for(request.endpoint, id=id, page=(page-1)) }}" class="pageButton" id="left" style="text-decoration: none; color: white;">🡄</a>
+		<a href="{{ url_for(request.endpoint, id=id, page=(page+1)) }}" class="pageButton" id="right" style="text-decoration: none; color: white;">🡆</a>
+	</body>
 </html>
 
