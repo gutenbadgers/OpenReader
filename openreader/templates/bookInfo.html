@@ -19,9 +19,11 @@
 		<li>{{ subject }}</li>
 		{% endfor %}
 	</ul>
-	<h2>Read</h2>
-	<a href="{{ url_for('books.read', id=book.id) }}">Click here to read "{{ book.title }}"</a>
-	<br>
+    <p>
+        <a href="{{ url_for('books.read', id=book.id) }}">Click here to read the entire text of "{{ book.title }}"</a>
+        <br>
+        Or you can <a href="{{ url_for('books.readPage', id=book.id, page=1) }}">jump to page {{ 1 }}</a-->
+    </p>
 	<a href="https://www.gutenberg.org/ebooks/{{ book.id }}">Book info on Project Gutenberg</a>
 	<!--a href="https://www.gutenberg.org/files/{{ book.id }}/{{ book.id }}-h/{{ book.id }}-h.htm">Read on Project Gutenberg</a-->
 	<br>

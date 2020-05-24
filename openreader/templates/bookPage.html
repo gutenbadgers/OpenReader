@@ -1,43 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
-	<style>
-		.pageButton {
-			box-shadow: 0px 10px 17px -9px #000000;
-			background:linear-gradient(to bottom, #999999 5%, #cfcfcf 100%);
-			background-color:#999999;
-			border-radius:38px;
-			display:inline-block;
-			cursor:pointer;
-			color:#ffffff;
-			font-family:Arial;
-			font-size:18px;
-			font-weight:bold;
-			padding:12px 14px;
-			text-decoration:none;
-			text-shadow:0px 1px 1px #000000;
-		}
-		.pageButton:hover {
-			background:linear-gradient(to bottom, #cfcfcf 5%, #999999 100%);
-			background-color:#cfcfcf;
-		}
-		#left {
-			position: fixed;
-			bottom: 75px;
-			left: 100px;
-		}
-		#right {
-			position: fixed;
-			bottom: 75px;
-			right: 100px;
-		}
-	</style>
-		{{ head }}
-	<div>
-		<pre>
-{{ body }}
-		</pre>
-	</div>
-	<a href="{{ url_for(request.endpoint, id=id, page=(page-1)) }}" class="pageButton" id="left" style="text-decoration: none; color: white;">🡄</a>
-	<a href="{{ url_for(request.endpoint, id=id, page=(page+1)) }}" class="pageButton" id="right" style="text-decoration: none; color: white;">🡆</a>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .pageButton {
+        box-shadow: 0px 10px 17px -9px #000000;
+        background: linear-gradient(to bottom, #999999 5%, #cfcfcf 100%);
+        background-color: #999999;
+        border-radius: 38px;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: Arial;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 12px 14px;
+        text-decoration: none;
+        text-shadow: 0px 1px 1px #000000;
+    }
+
+        .pageButton:hover {
+            background: linear-gradient(to bottom, #cfcfcf 5%, #999999 100%);
+            background-color: #cfcfcf;
+        }
+
+    #left {
+        position: fixed;
+        bottom: 75px;
+        left: 100px;
+    }
+
+    #right {
+        position: fixed;
+        bottom: 75px;
+        right: 100px;
+    }
+</style>
+{{ head }}
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">OpenReader</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{  url_for('index')  }}">Home</a></li>
+                {% if g.user %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello, {{ g.user['username'] }}! <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('books.bookshelf') }}">Your Bookshelf</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{{ url_for('auth.logout') }}">Not {{ g.user['username'] }}? log out</a></li>
+                    </ul>
+                </li>
+
+                {% else %}
+                <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                {% endif %}
+
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+    <div class="center text-center">
+        <p>
+            <pre>
+            {{ body }}
+            </pre>
+        </p>
+
+    </div>
+</div>
+<div class="center-block text-center">
+    <a href="{{ url_for(request.endpoint, id=id, page=(page-1)) }}" class="pageButton" id="left" style="text-decoration: none; color: white;">🡄</a>
+    <a href="{{ url_for(request.endpoint, id=id, page=(page+1)) }}" class="pageButton" id="right" style="text-decoration: none; color: white;">🡆</a>
+
+</div>
+{% endblock %}
+
 

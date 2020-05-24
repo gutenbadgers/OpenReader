@@ -1933,7 +1933,7 @@ code,
 kbd,
 pre,
 samp {
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-family: Lato, sans-serif;
 }
 
 code {
@@ -1971,7 +1971,7 @@ pre {
     color: #333;
     word-break: break-all;
     word-wrap: break-word;
-    background-color: #f5f5f5;
+    background-color: #f8e9d9;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
