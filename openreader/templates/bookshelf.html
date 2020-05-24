@@ -11,9 +11,11 @@
 {% endblock %}
 
 {% block content %}
+
+{% if books %}
 <table id="bookTable">
     <tr>
-        <th></th>
+        <th>Click Cover to Open Book</th>
         <th onclick="sortTable(1)" id="title"> Title  ↕ </th>
         <th onclick="sortTable(2)" id="author"> Author  ↕ </th>
         <th></th>
@@ -42,9 +44,11 @@
         </td>
         {% if not loop.last %}
         {% endif %}
+
     </tr>
     {% endfor %}
 </table>
+{% endif %}
 <!-- removed unneccessary header row, and made it such that the "Need more books" only appears once, at the end of a bookshelf with books-->
     {% if books %}
 <p>
