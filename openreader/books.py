@@ -25,7 +25,7 @@ def bookshelf():
 		).fetchall()
 		books = [catalog.get_info(b["book_id"]) for b in book_ids]
 		return render_template("bookshelf.html", books=books)
-	
+
 	action = request.form.get("action")
 	book_id = request.form.get("book_id")
 	user_id = g.user["id"]
@@ -84,7 +84,7 @@ def read(id):
 @bp.route("/book/<int:id>/read/<int:page>")
 def readPage(id, page):
 	body = catalog.get_content_page(id, page)
-	
+
 	if page == 1 and not body:
 		return "Book not available!"
 
@@ -131,3 +131,13 @@ def searchResults(searchType, terms):
 
 	books = catalog.search(searchType, terms)
 	return render_template("search.html", **locals())
+
+# Function to get the URL of the current page to be used in bookmarks.
+@bp.route("/book/<int:id>/read/<int:page>/getbookmark")
+def getBookmark(id, page):
+	pageURL = url_for("books.readPage", id=id, page=page)
+	print(pageURL)
+
+	#Enter the pabeURL into the db
+
+	return redirect(pageURL)

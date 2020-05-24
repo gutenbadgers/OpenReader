@@ -30,6 +30,24 @@
 			bottom: 75px;
 			right: 100px;
 		}
+		.bookmarkButton {
+			background:linear-gradient(to bottom, #999999 5%, #cfcfcf 100%);
+			background-color:#999999;
+			cursor:pointer;
+			font-family:Arial;
+			font-size:18px;
+			padding:12px 14px;
+			text-decoration:none;
+			text-shadow:0px 1px 1px #000000;
+			color: black;
+		}
+		#middle {
+			margin: 0;
+			position: absolute;
+			bottom: 75px;
+			left: 45%;
+		}
+
 	</style>
 	<head>
 		<title>Read - OpenReader</title>
@@ -47,7 +65,7 @@
 			</pre>
 		</div>
 		<a href="{{ url_for(request.endpoint, id=id, page=(page-1)) }}" class="pageButton" id="left" style="text-decoration: none; color: white;">🡄</a>
+		<a href="{{ url_for('books.getBookmark', id=id, page=page) }}" class ="bookmarkButton" id="middle">Create Bookmark</a>
 		<a href="{{ url_for(request.endpoint, id=id, page=(page+1)) }}" class="pageButton" id="right" style="text-decoration: none; color: white;">🡆</a>
 	</body>
 </html>
-
