@@ -9,6 +9,7 @@ For the simplest method, just do this:
 ```bash
 pip install flask # or use pip3 if Python 2 is your system default
 flask init-db
+pip install flask-bootstrap 
 ```
 
 For an isolated installation, the process is a bit more involved:
