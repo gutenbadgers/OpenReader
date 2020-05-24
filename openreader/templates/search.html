@@ -15,65 +15,100 @@
 {% endblock %}
 
 {% block content %}
-<form action="{{ url_for('books.search') }}" method="POST">
-    <input type="text" name="terms" {% if terms %}value="{{ terms }}" {% endif %} required>
-    <br>
-    <input type="radio" id="title-author" name="searchType" value="title-author"
-           required>
-    <label for="title">Title/Author</label><br>
-    <input type="radio" id="category" name="searchType" value="category"
-           required>
-    <label for="category">Category</label>
-    <br>
-    <input type="submit" value="Submit">
-</form>
-	{% if terms %}
-<h1>Search results for "{{ terms }}" by {{ searchType }}:</h1>
-		{% if books %}
-<table id="bookTable">
-    <tr>
-        <th></th>
-        <th onclick="sortTable(1)" id="title"> Title  ↕ </th>
-        <th onclick="sortTable(2)" id="author"> Author  ↕ </th>
-        <th></th>
-    </tr>
-    {% for book in books %}
-    <tr>
-        <td>
-            <a href="{{ url_for('books.info', id=book.id) }}">
-                <img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
-            </a>
-        </td>
-        <td>
-            {{ book.title }}
-        </td>
-        <td>
-            {% if book.authors %}
-            {{ book.authors[0].name }}
-            {% endif %}
-        </td>
-        <td>
-            {% if g.user %}
-            {% if bookmarked %}
-            This book is already in your <a href="{{ url_for('books.bookshelf') }}">bookshelf</a>!
-            {% else %}
-            <form action="{{ url_for('books.bookshelf') }}" method="POST">
-                <input type="hidden" id="action" name="action" value="add">
-                <input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
-                <input type="submit" value="Add to bookshelf">
-            </form>
-            {% endif %}
-            {% else %}
-            <a href="{{ url_for('auth.login') }}">Log in</a> to add to your bookshelf.
-            {% endif %}
-        </td>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">OpenReader</a>
+        </div>
 
-        {% endfor %}
-    </tr>
-</table>
-		{% else %}
-<p>No results!</p>
-		{% endif %}
-	{% endif %}
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{  url_for('index')  }}">Home</a></li>
+                {% if g.user %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello, {{ g.user['username'] }}! <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('books.bookshelf') }}">Your Bookshelf</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{{ url_for('auth.logout') }}">Not {{ g.user['username'] }}? log out</a></li>
+                    </ul>
+                </li>
+
+                {% else %}
+                <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                {% endif %}
+
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+    <div class="center-block text-center">
+        <form action="{{ url_for('books.search') }}" method="POST">
+            <input type="text" name="terms" {% if terms %}value="{{ terms }}" {% endif %} required>
+            <br>
+            <input type="radio" id="title-author" name="searchType" value="title-author"
+                   required>
+            <label for="title">Title/Author</label><br>
+            <input type="radio" id="category" name="searchType" value="category"
+                   required>
+            <label for="category">Category</label>
+            <br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</div>
+<div class="container">
+    {% if terms %}
+    <h1>Search results for "{{ terms }}" by {{ searchType }}:</h1>
+    {% if books %}
+    <table id="bookTable">
+        <tr>
+            <th></th>
+            <th onclick="sortTable(1)" id="title"> Title  ↕ </th>
+            <th onclick="sortTable(2)" id="author"> Author  ↕ </th>
+            <th></th>
+        </tr>
+        {% for book in books %}
+        <tr>
+            <td>
+                <a href="{{ url_for('books.info', id=book.id) }}">
+                    <img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
+                </a>
+            </td>
+            <td>
+                {{ book.title }}
+            </td>
+            <td>
+                {% if book.authors %}
+                {{ book.authors[0].name }}
+                {% endif %}
+            </td>
+            <td>
+                {% if g.user %}
+                {% if bookmarked %}
+                This book is already in your <a href="{{ url_for('books.bookshelf') }}">bookshelf</a>!
+                {% else %}
+                <form action="{{ url_for('books.bookshelf') }}" method="POST">
+                    <input type="hidden" id="action" name="action" value="add">
+                    <input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
+                    <input type="submit" value="Add to bookshelf">
+                </form>
+                {% endif %}
+                {% else %}
+                <a href="{{ url_for('auth.login') }}">Log in</a> to add to your bookshelf.
+                {% endif %}
+            </td>
+
+            {% endfor %}
+        </tr>
+    </table>
+    {% else %}
+    <p>No results!</p>
+    {% endif %}
+    {% endif %}
+</div>
 <script src="{{ url_for('static', filename='sortTable.js') }}"></script>
 {% endblock %}
