@@ -85,6 +85,9 @@ def read(id):
 def readPage(id, page):
 	body = catalog.get_content_page(id, page)
 	
+	if page == 1 and not body:
+		return "Book not available!"
+
 	if not body:	# failsafe to keep user from falling out of page ranges
 		return redirect(url_for("books.readPage", id=id, page=1))
 

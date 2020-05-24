@@ -10,18 +10,21 @@ def _read_catalog(route):
 	url = "http://gutendex.com/books" + route
 	try:
 		with urllib.request.urlopen(url) as req:
-			return json.loads(req.read().decode())
+			return json.loads(req.read().decode("utf-8"))
 	except urllib.error.HTTPError:
 		return None
 
 
 # https://www.gutenberg.org/wiki/Gutenberg:Information_About_Robot_Access_to_our_Pages
 # returns bytes, not a string
-def _read_PG(route):
+def _read_PG(route, text=False):
 	url = "https://www.gutenberg.org" + route
 	try:
 		with urllib.request.urlopen(url) as req:
-			return req.read()
+			if text:
+				return req.read().decode("utf-8")
+			else:
+				return req.read()
 	except urllib.error.HTTPError:
 		return None
 
@@ -39,10 +42,20 @@ def get_cover(id, size):
 # return book content
 def get_content(id):
 	if cache.contains(id):
-		print("returning cached item:", id)
-		return cache.get(id)
-	content = _read_PG("/files/{0}/{0}-0.txt".format(id))
+		print("Returning cached item:", id)
+		content = cache.get(id)
+		if content:
+			return content
+		else:
+			print("Failed to retrieve cached item. Fetching again.")
+
 	#content = _read_PG("/files/{0}/{0}-h/{0}-h.htm".format(id))
+
+	# if available, the -0 version is newer
+	content = _read_PG("/files/{0}/{0}-0.txt".format(id), text=True)
+	if not content:
+		content = _read_PG("/files/{0}/{0}.txt".format(id), text=True)
+
 	cache.add(id, content)
 	return content
 	

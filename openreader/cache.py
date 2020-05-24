@@ -33,15 +33,19 @@ def contains(name):
 
 def get(name):
 	if contains(name):
-		with open(_path_to(name)) as f:
-			return f.read()
+		try:
+			with open(_path_to(name), encoding="utf-8") as f:
+				return f.read()
+		except Exception as e:
+			print("Error while reading cache:", e)
+			return None
 
 def add(name, content):
 	if not content:
 		print("Can't cache nothing! {} has no content.".format(name))
 		return
 
-	size = len(content)
+	size = len(content.encode("utf-8"))
 
 	if size > _max_size():
 		print("{} is larger than the cache. Ignoring.".format(name))
@@ -52,7 +56,7 @@ def add(name, content):
 		os.makedirs(_path())
 
 	with open(_path_to(name), "wb") as f:
-		f.write(content)
+		f.write(content.encode("utf-8"))
 
 
 def init_app(app):
