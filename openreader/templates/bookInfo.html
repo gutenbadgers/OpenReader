@@ -33,7 +33,6 @@
 				This book is already in your <a href="{{ url_for('books.bookshelf') }}">bookshelf</a>!
 			{% else %}
 
-		{% else %}
 <form action="{{ url_for('books.bookshelf') }}" method="POST">
     <input type="hidden" id="action" name="action" value="add">
     <input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
