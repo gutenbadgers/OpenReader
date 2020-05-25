@@ -65,7 +65,7 @@
 			</pre>
 		</div>
 		<a href="{{ url_for(request.endpoint, id=id, page=(page-1)) }}" class="pageButton" id="left" style="text-decoration: none; color: white;">🡄</a>
-		<a href="{{ url_for('books.getBookmark', id=id, page=page) }}" class ="bookmarkButton" id="middle">Create Bookmark</a>
+		<a href="{{ url_for('books.getBookmark', id=id, page=page) }}" class ="bookmarkButton" id="middle">Return to the book's info page</a>
 		<a href="{{ url_for(request.endpoint, id=id, page=(page+1)) }}" class="pageButton" id="right" style="text-decoration: none; color: white;">🡆</a>
 	</body>
 </html>

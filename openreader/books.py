@@ -134,10 +134,43 @@ def searchResults(searchType, terms):
 
 # Function to get the URL of the current page to be used in bookmarks.
 @bp.route("/book/<int:id>/read/<int:page>/getbookmark")
+@login_required
 def getBookmark(id, page):
 	pageURL = url_for("books.readPage", id=id, page=page)
-	print(pageURL)
+	db = get_db()
+	print("\nStarting DB\n")
 
-	#Enter the pabeURL into the db
+	db.execute(
+		"INSERT INTO bookmark (book_id, user_id, page, implicit) VALUES(?, ?, ?, ?)",
+		(id, g.user["id"], page, 0)
+	)
+
+	viewAll = db.execute(
+	"SELECT * FROM bookmark"
+	).fetchall()
+
+	for row in viewAll:
+		print(row)
+
+	newURL = url_for("books.info", id=id)
+	db.commit()
+	return redirect(newURL)
+
+@bp.route("/book/<int:id>/readbookmark")
+def send_to_bookmark(id):
+	db = get_db()
+	if not g: abort(400)
+
+	# Retrieve bookmark info from row with highest bookmark_id
+	thisBook = db.execute(
+		"SELECT * FROM bookmark WHERE user_id = ? AND book_id = ? AND bookmark_id = (SELECT MAX(bookmark_id) FROM bookmark)",
+	 	(g.user["id"], id)
+	 ).fetchone()
+
+
+	#Send user to the correct page
+	page = thisBook[3]
+
+	pageURL = url_for("books.readPage", id=id, page=page)
 
 	return redirect(pageURL)
