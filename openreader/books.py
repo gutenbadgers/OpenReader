@@ -25,7 +25,7 @@ def bookshelf():
 		).fetchall()
 		books = [catalog.get_info(b["book_id"]) for b in book_ids]
 		return render_template("bookshelf.html", books=books)
-	
+
 	action = request.form.get("action")
 	book_id = request.form.get("book_id")
 	user_id = g.user["id"]
@@ -84,7 +84,7 @@ def read(id):
 @bp.route("/book/<int:id>/read/<int:page>")
 def readPage(id, page):
 	body = catalog.get_content_page(id, page)
-	
+
 	if page == 1 and not body:
 		return "Book not available!"
 
@@ -131,3 +131,39 @@ def searchResults(searchType, terms):
 
 	books = catalog.search(searchType, terms)
 	return render_template("search.html", **locals())
+
+# Function to get the URL of the current page to be used in bookmarks.
+@bp.route("/book/<int:id>/read/<int:page>/getbookmark")
+@login_required
+def getBookmark(id, page):
+	pageURL = url_for("books.readPage", id=id, page=page)
+	db = get_db()
+	if not g: abort(400)
+
+	db.execute(
+		"INSERT INTO bookmark (book_id, user_id, page, implicit) VALUES(?, ?, ?, ?)",
+		(id, g.user["id"], page, 0)
+	)
+
+	newURL = url_for("books.info", id=id)
+	db.commit()
+	return redirect(newURL)
+
+@bp.route("/book/<int:id>/readbookmark")
+def send_to_bookmark(id):
+	db = get_db()
+	if not g: abort(400)
+
+	# Retrieve bookmark info from row with highest bookmark_id
+	thisBook = db.execute(
+		"SELECT * FROM bookmark WHERE user_id = ? AND book_id = ? AND bookmark_id = (SELECT MAX(bookmark_id) FROM bookmark)",
+	 	(g.user["id"], id)
+	 ).fetchone()
+
+
+	#Send user to the correct page
+	page = thisBook[3]
+
+	pageURL = url_for("books.readPage", id=id, page=page)
+
+	return redirect(pageURL)

@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS bookshelf;
+DROP TABLE IF EXISTS bookmark;
 
 CREATE TABLE user (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -11,5 +12,14 @@ CREATE TABLE bookshelf (
 	book_id INTEGER NOT NULL,
 	user_id INTEGER NOT NULL,
 	UNIQUE (book_id, user_id),
+	FOREIGN KEY (user_id) REFERENCES user (id)
+);
+
+CREATE TABLE bookmark (
+	bookmark_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	book_id INTEGER NOT NULL,
+	user_id INTEGER NOT NULL,
+	page INTEGER NOT NULL,
+	implicit BOOLEAN NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES user (id)
 );
