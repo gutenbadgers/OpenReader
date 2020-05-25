@@ -138,19 +138,12 @@ def searchResults(searchType, terms):
 def getBookmark(id, page):
 	pageURL = url_for("books.readPage", id=id, page=page)
 	db = get_db()
-	print("\nStarting DB\n")
+	if not g: abort(400)
 
 	db.execute(
 		"INSERT INTO bookmark (book_id, user_id, page, implicit) VALUES(?, ?, ?, ?)",
 		(id, g.user["id"], page, 0)
 	)
-
-	viewAll = db.execute(
-	"SELECT * FROM bookmark"
-	).fetchall()
-
-	for row in viewAll:
-		print(row)
 
 	newURL = url_for("books.info", id=id)
 	db.commit()
