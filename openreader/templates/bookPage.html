@@ -37,7 +37,6 @@
   		#middle {
 			margin: 0;
 			position: absolute;
-			bottom: 75px;
 			left: 45%;
 		}
 
@@ -95,9 +94,11 @@
 </div>
 <div class="center-block text-center">
     <a href="{{ url_for(request.endpoint, id=id, page=(page-1)) }}" class="pageButton" id="left" style="text-decoration: none; color: white;">🡄</a>
-    <a href="{{ url_for('books.getBookmark', id=id, page=page) }}" class ="bookmarkButton" id="middle">Return to the book's info page</a>
     <a href="{{ url_for(request.endpoint, id=id, page=(page+1)) }}" class="pageButton" id="right" style="text-decoration: none; color: white;">🡆</a>
 
+</div>
+<div>
+    <a href="{{ url_for('books.getBookmark', id=id, page=page) }}" class="bookmarkButton" id="middle">Return to the book's info page</a>
 </div>
 {% endblock %}
 
