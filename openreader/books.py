@@ -142,7 +142,7 @@ def getBookmark(id, page):
 
 	db.execute(
 		"INSERT INTO bookmark (book_id, user_id, page, implicit) VALUES(?, ?, ?, ?)",
-		(id, g.user["id"], page, 0)
+		(id, g.user["id"], page, 1)
 	)
 
 	newURL = url_for("books.info", id=id)
@@ -160,6 +160,10 @@ def send_to_bookmark(id):
 	 	(g.user["id"], id)
 	 ).fetchone()
 
+	 # If case for no bookmarks
+	if thisBook is None:
+		newURL = url_for("books.info", id=id)
+		return redirect(newURL)
 
 	#Send user to the correct page
 	page = thisBook[3]
