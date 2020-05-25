@@ -67,8 +67,9 @@ def get_content_page(id, page):
 		return None
 
 	lines = full_book.split("\n")
-	first_index = _page_lines * (page-1)
-	last_index  = _page_lines * page
+	first_index = max(_page_lines * (page-1), 0)
+	last_index  = min(_page_lines * page, len(lines))
+
 	#num_pages  = -(-len(lines) // _page_lines)
 
 	if first_index < 0 or last_index > len(lines):

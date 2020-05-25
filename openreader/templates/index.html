@@ -1,12 +1,44 @@
 {% extends "base.html" %}
 
-{% block header %}
-	<h1>{% block title %}Home{% endblock %}</h1>
-{% endblock %}
-
 {% block content %}
-	<ul>
-		<li><a href="{{ url_for('books.search') }}">Search page</a></li>
-		<li><a href="{{ url_for('books.bookshelf') }}">Personal bookshelf</a></li>
-	</ul>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ url_for('index') }}">OpenReader</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{  url_for('index')  }}">Home</a></li>
+                        {% if g.user %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello, {{ g.user['username'] }}! <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('books.bookshelf') }}">Your Bookshelf</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ url_for('auth.logout') }}">Not {{ g.user['username'] }}? log out</a></li>
+                            </ul>
+                        </li>
+                        
+                        {% else %}
+                        <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                        <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                        {% endif %}
+                    
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+<div class="container-fluid">
+    <div class="jumbotron">
+        <h1>Open Reader</h1>
+        <p>Open Reader is a web app interface for <a href="https://www.gutenberg.org">Project Gutenberg</a> </p>
+        <p>It provides a more user friendly, clean, and enjoyable interface that allows the user to access Project Gutenberg's extensive library 
+        of books that have entered the public domain</p> 
+        <p> Open Reader users can add books to their bookshelves, add bookmarks to these books, and experience a paginated and more "book like" experience, compared to reading the books on Project Gutenberg directly </p>
+        <p><a class="btn btn-secondary btn-lg" href="{{ url_for('books.search') }}" role="button">Find Some Books</a></p>
+    </div>
+</div>
 {% endblock %}

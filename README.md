@@ -7,7 +7,7 @@ An open-source e-reader for out-of-copyright books written in Python 3.
 For the simplest method, just do this:
 
 ```bash
-pip install flask # or use pip3 if Python 2 is your system default
+pip install flask-bootstrap # or use pip3 if Python 2 is your system default
 flask init-db
 ```
 
