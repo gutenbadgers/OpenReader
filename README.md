@@ -26,7 +26,7 @@ virtualenv --python=python3 venv
 source venv/bin/activate
 
 # Once inside venv, pip will install packages isolated from your system
-pip install flask
+pip install flask-bootstrap
 
 # Then setup your local state
 flask init-db

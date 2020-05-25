@@ -150,6 +150,7 @@ def getBookmark(id, page):
 	return redirect(newURL)
 
 @bp.route("/book/<int:id>/readbookmark")
+@login_required
 def send_to_bookmark(id):
 	db = get_db()
 	if not g: abort(400)
