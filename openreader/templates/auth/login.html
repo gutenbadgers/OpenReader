@@ -7,6 +7,37 @@
 {% endblock %}
 
 {% block content %}
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{{ url_for('index') }}">OpenReader</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{  url_for('index')  }}">Home</a></li>
+                    {% if g.user %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello, {{ g.user['username'] }}! <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('books.bookshelf') }}">Your Bookshelf</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{ url_for('auth.logout') }}">Not {{ g.user['username'] }}? log out</a></li>
+                        </ul>
+                    </li>
+                    
+                    {% else %}
+                    <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                    {% endif %}
+                
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
 <form method="post">
     <label for="username">Username</label>
     <input name="username" id="username" required>
