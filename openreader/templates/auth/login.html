@@ -38,6 +38,8 @@
     </div><!-- /.container-fluid -->
 </nav>
 
+<h3>Login</h3>
+
 <form method="post">
     <label for="username">Username</label>
     <input name="username" id="username" required>
@@ -47,4 +49,8 @@
     <br>
     <input type="submit" value="Log In">
 </form>
+
+<br>
+
+<p>Don't have an account? Register <a href="{{ url_for('auth.register')}}">here</a>.</p>
 {% endblock %}
