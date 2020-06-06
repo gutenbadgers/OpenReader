@@ -16,12 +16,12 @@ def index():
 	booklist = []
 	count = 0
 	while count < 5:
-		id = random.randint(1,3000)
+		id = random.randint(1,4000)
 		book = catalog.get_info(id)
 		cover = catalog.get_cover(id, "medium")
 
 		while not cover:
-			id = random.randint(1,3000)
+			id = random.randint(1,4000)
 			book = catalog.get_info(id)
 
 		booklist.append(book)
