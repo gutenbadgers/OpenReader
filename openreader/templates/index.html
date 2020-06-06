@@ -49,49 +49,67 @@
         <p><a href="{{ url_for('books.search') }}" role="button">Click here to search for some books</a>, or click on a book cover below to explore a book!</p>
 
     <br>
-    <h2>Most Popular Books</h2>
-    <div class="row justify-content-center">
-        <div class="col-auto">
-            <table id="bookTable" class="table table-responsive">
-                <th> 
-                    <a href="{{ url_for('books.info', id=1342) }}">
-                        <img src="{{ url_for('books.cover', id=1342, size='medium') }}" alt="Book Cover">
-                    </a>
-                    <a href="{{ url_for('books.info', id=11) }}">
-                        <img src="{{ url_for('books.cover', id=11, size='medium') }}" alt="Book Cover">
-                    </a>
-                    <a href="{{ url_for('books.info', id=1635) }}">
-                        <img src="{{ url_for('books.cover', id=1635, size='medium') }}" alt="Book Cover">
-                    </a>
-                    <a href="{{ url_for('books.info', id=2701) }}">
-                        <img src="{{ url_for('books.cover', id=2701, size='medium') }}" alt="Book Cover">
-                    </a>
-                    <a href="{{ url_for('books.info', id=25525) }}">
-                        <img src="{{ url_for('books.cover', id=25525, size='medium') }}" alt="Book Cover">
-                    </a>
-                    <a href="{{ url_for('books.info', id=84) }}">
-                        <img src="{{ url_for('books.cover', id=84, size='medium') }}" alt="Book Cover">
-                    </a>
-                </th>
-            </table>
-        </div>
     </div>
 
-    <h2>Rare Finds</h2>
-    <div class="row justify-content-center">
-        <div class="col-auto">
-            {% if books %}
-                <table id="bookTable" class="table table-responsive">
-                    {% for book in books%}
-                        <th> 
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Most Popular Books</h2>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <a href="{{ url_for('books.info', id=1342) }}">
+                            <img src="{{ url_for('books.cover', id=1342, size='medium') }}" alt="Book Cover">
+                        </a>
+                    </div>
+                    <div class="col-lg-2">
+                        <a href="{{ url_for('books.info', id=11) }}">
+                            <img src="{{ url_for('books.cover', id=11, size='medium') }}" alt="Book Cover">
+
+                        </a>
+                    </div>
+                    <div class="col-lg-2">
+                        <a href="{{ url_for('books.info', id=1635) }}">
+                            <img src="{{ url_for('books.cover', id=1635, size='medium') }}" alt="Book Cover">
+                        </a>
+                    </div>
+                    <div class="col-lg-2">
+                        <a href="{{ url_for('books.info', id=2701) }}">
+                            <img src="{{ url_for('books.cover', id=2701, size='medium') }}" alt="Book Cover">
+                        </a>
+                    </div>
+                    <div class="col-lg-2">
+                        <a href="{{ url_for('books.info', id=25525) }}">
+                            <img src="{{ url_for('books.cover', id=25525, size='medium') }}" alt="Book Cover">
+                        </a>
+                    </div>
+                    <div class="col-lg-2">
+                        <a href="{{ url_for('books.info', id=84) }}">
+                            <img src="{{ url_for('books.cover', id=84, size='medium') }}" alt="Book Cover">
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="row">
+            <h2>Rare Finds</h2>
+            <div class="col-auto">
+                {% if books %}
+                <div class="row">
+                        {% for book in books%}
+                        <div class="col-lg-2">
                             <a href="{{ url_for('books.info', id=book.id) }}">
                                 <img src="{{ url_for('books.cover', id=book.id, size='medium') }}" alt="Book Cover">
                             </a>
-                        </th>
-                    {% endfor %}
-                </table>
-            {% endif %}
+                        </div>
+                        {% endfor %}
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
+    
 </div>
 {% endblock %}
