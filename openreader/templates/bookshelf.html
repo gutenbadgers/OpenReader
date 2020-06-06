@@ -46,56 +46,60 @@
 
 {% if books %}
 <div class="container">
-    <div class="center-block text-center">
-        <table class="table-bordered align-center" id="bookTable">
-            <tr>
-                <th>Click Cover to Open Book</th>
-                <th onclick="sortTable(1)" id="title"> Title  ↕ </th>
-                <th onclick="sortTable(2)" id="author"> Author ↕ </th>
-                <th></th>
-            </tr>
-            {% for book in books %}
-            <tr>
-                <td>
-                    <a href="{{ url_for('books.info', id=book.id) }}">
-                        <img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
-                    </a>
-                </td>
-                <td>
-                    {{ book.title }}
-                </td>
-                <td>
-                    {% if book.authors %}
-                    {{ book.authors[0].name }}
+    <div class="row">
+        <div class="center-block text-center">
+            <table class="table table-bordered align-center" id="bookTable">
+                <tr>
+                    <th class="text-center">Click Cover to Open Book</th>
+                    <th class="text-center" onclick="sortTable(1)" id="title"> Title  ↕ </th>
+                    <th class="text-center" onclick="sortTable(2)" id="author"> Author ↕ </th>
+                    <th></th>
+                </tr>
+                {% for book in books %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('books.info', id=book.id) }}">
+                            <img src="{{ url_for('books.cover', id=book.id, size='small') }}" alt="Book Cover">
+                        </a>
+                    </td>
+                    <td>
+                        {{ book.title }}
+                    </td>
+                    <td>
+                        {% if book.authors %}
+                        {{ book.authors[0].name }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="{{ url_for('books.bookshelf') }}" method="POST">
+                            <input type="hidden" id="action" name="action" value="delete">
+                            <input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
+                            <input class="btn btn-danger" type="submit" value="Remove from bookshelf">
+                        </form>
+                    </td>
+                    {% if not loop.last %}
                     {% endif %}
-                </td>
-                <td>
-                    <form action="{{ url_for('books.bookshelf') }}" method="POST">
-                        <input type="hidden" id="action" name="action" value="delete">
-                        <input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
-                        <input class="btn btn-danger" type="submit" value="Remove from bookshelf">
-                    </form>
-                </td>
-                {% if not loop.last %}
-                {% endif %}
 
-            </tr>
-            {% endfor %}
-        </table>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
     
     {% endif %}
 
-
-    <!-- removed unneccessary header row, and made it such that the "Need more books" only appears once, at the end of a bookshelf with books-->
-    {% if books %}
-    <p>
-        Need more books? Try doing a <a href="{{ url_for('books.search') }}">search</a><!DOCTYPE html>
-    </p>
-    {% endif %}
-    {% if not books %}
-    <p>Empty! Why not find some books with a <a href="{{ url_for('books.search') }}">search</a>?</p>
-    {% endif %}
+    <div class="row">
+        <!-- removed unneccessary header row, and made it such that the "Need more books" only appears once, at the end of a bookshelf with books-->
+        {% if books %}
+        <p>
+            Need more books? Try doing a <a href="{{ url_for('books.search') }}">search</a><!DOCTYPE html>
+        </p>
+        {% endif %}
+        {% if not books %}
+        <p>Empty! Why not find some books with a <a href="{{ url_for('books.search') }}">search</a>?</p>
+        {% endif %}
+    </div>
+    
 
 </div>
 
