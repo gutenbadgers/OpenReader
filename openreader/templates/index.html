@@ -31,85 +31,87 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-<div class="container-fluid">
-    <div class="jumbotron">
-        <h1>Open Reader</h1>
-        <p>Open Reader is a web app interface for <a href="https://www.gutenberg.org">Project Gutenberg</a> </p>
-        <p>It provides a more user-friendly, clean, and enjoyable interface that allows the user to access Project Gutenberg's extensive library 
-        of books that have entered the public domain</p>
+    <div class="container-fluid" style="padding-bottom: 2em;">
+        <div class="jumbotron">
+            <h1>Open Reader</h1>
+            <p>Open Reader is a web app interface for <a href="https://www.gutenberg.org">Project Gutenberg</a> </p>
+            <p>It provides a more user-friendly, clean, and enjoyable interface that allows the user to access Project Gutenberg's extensive library 
+            of books that have entered the public domain</p>
 
-        <h3>What can I do with a registered account?</h3>
-        <p>If you choose to register an account, you gain several features. You can add books to your personal bookshelf, create bookmarks to automatically begin reading from where you left off, 
-            and also experience a paginated, more book-like experience compared to reading books directly on Project Gutenberg. Create your account today by clicking the Register tab above!</p>
+            <h3>What can I do with a registered account?</h3>
+            <p>If you choose to register an account, you gain several features. You can add books to your personal bookshelf, create bookmarks to automatically begin reading from where you left off, 
+                and also experience a paginated, more book-like experience compared to reading books directly on Project Gutenberg. Create your account today by clicking the Register tab above!</p>
 
-        <h3>What if I don't want to register an account?</h3>
-        <p>No problem! You are still welcome to peruse the book collection and read at your will. However, you won't have access to some features as noted above.</p>
+            <h3>What if I don't want to register an account?</h3>
+            <p>No problem! You are still welcome to peruse the book collection and read at your will. However, you won't have access to some features as noted above.</p>
 
-        <h3>Get started!</h3>
-        <p><a href="{{ url_for('books.search') }}" role="button">Click here to search for some books</a>, or click on a book cover below to explore a book!</p>
+            <h3>Get started!</h3>
+            <p><a href="{{ url_for('books.search') }}" role="button">Click here to search for some books</a>, or click on a book cover below to explore a book!</p>
 
-    <br>
-    </div>
-
-    <div class="container-fluid">
-
-        <div class="row">
-            <div class="col-lg-12">
-                <h2>Most Popular Books</h2>
-                <div class="row">
-                    <div class="col-lg-2">
-                        <a href="{{ url_for('books.info', id=1342) }}">
-                            <img src="{{ url_for('books.cover', id=1342, size='medium') }}" alt="Book Cover">
-                        </a>
-                    </div>
-                    <div class="col-lg-2">
-                        <a href="{{ url_for('books.info', id=11) }}">
-                            <img src="{{ url_for('books.cover', id=11, size='medium') }}" alt="Book Cover">
-
-                        </a>
-                    </div>
-                    <div class="col-lg-2">
-                        <a href="{{ url_for('books.info', id=1635) }}">
-                            <img src="{{ url_for('books.cover', id=1635, size='medium') }}" alt="Book Cover">
-                        </a>
-                    </div>
-                    <div class="col-lg-2">
-                        <a href="{{ url_for('books.info', id=2701) }}">
-                            <img src="{{ url_for('books.cover', id=2701, size='medium') }}" alt="Book Cover">
-                        </a>
-                    </div>
-                    <div class="col-lg-2">
-                        <a href="{{ url_for('books.info', id=25525) }}">
-                            <img src="{{ url_for('books.cover', id=25525, size='medium') }}" alt="Book Cover">
-                        </a>
-                    </div>
-                    <div class="col-lg-2">
-                        <a href="{{ url_for('books.info', id=84) }}">
-                            <img src="{{ url_for('books.cover', id=84, size='medium') }}" alt="Book Cover">
-                        </a>
-                    </div>
-                </div>
-                
-            </div>
+        <br>
         </div>
-        
-        <div class="row">
-            <h2>Rare Finds</h2>
-            <div class="col-auto">
-                {% if books %}
-                <div class="row">
-                        {% for book in books%}
+
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Most Popular Books</h2>
+                    <div class="row">
                         <div class="col-lg-2">
-                            <a href="{{ url_for('books.info', id=book.id) }}">
-                                <img src="{{ url_for('books.cover', id=book.id, size='medium') }}" alt="Book Cover">
+                            <a href="{{ url_for('books.info', id=1342) }}">
+                                <img src="{{ url_for('books.cover', id=1342, size='medium') }}" alt="Book Cover">
                             </a>
                         </div>
-                        {% endfor %}
+                        <div class="col-lg-2">
+                            <a href="{{ url_for('books.info', id=11) }}">
+                                <img src="{{ url_for('books.cover', id=11, size='medium') }}" alt="Book Cover">
+
+                            </a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a href="{{ url_for('books.info', id=1635) }}">
+                                <img src="{{ url_for('books.cover', id=1635, size='medium') }}" alt="Book Cover">
+                            </a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a href="{{ url_for('books.info', id=2701) }}">
+                                <img src="{{ url_for('books.cover', id=2701, size='medium') }}" alt="Book Cover">
+                            </a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a href="{{ url_for('books.info', id=25525) }}">
+                                <img src="{{ url_for('books.cover', id=25525, size='medium') }}" alt="Book Cover">
+                            </a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a href="{{ url_for('books.info', id=84) }}">
+                                <img src="{{ url_for('books.cover', id=84, size='medium') }}" alt="Book Cover">
+                            </a>
+                        </div>
+                    </div>
+                
                 </div>
-                {% endif %}
+            </div>
+        
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Rare Finds</h2>
+                    <div class="col-auto">
+                        {% if books %}
+                        <div class="row">
+                            {% for book in books%}
+                            <div class="col-lg-2">
+                                <a href="{{ url_for('books.info', id=book.id) }}">
+                                    <img src="{{ url_for('books.cover', id=book.id, size='medium') }}" alt="Book Cover">
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>  
             </div>
         </div>
-    </div>
     
-</div>
+    </div>
 {% endblock %}

@@ -72,7 +72,7 @@
                 <form action="{{ url_for('books.bookshelf') }}" method="POST">
                     <input type="hidden" id="action" name="action" value="add">
                     <input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
-                    <input type="submit" value="Add to bookshelf">
+                    <input class="btn btn-primary" type="submit" value="Add to bookshelf">
                 </form>
                 {% endif %}
                 {% else %}
