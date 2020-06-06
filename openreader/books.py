@@ -6,12 +6,28 @@ import urllib
 from openreader.auth import login_required
 from openreader.db import get_db
 import openreader.catalog as catalog
+import random
 
 bp = Blueprint("books", __name__, static_folder="static")
 
 @bp.route("/")
 def index():
-	return render_template("index.html")
+
+	booklist = []
+	count = 0
+	while count < 5:
+		id = random.randint(1,4000)
+		book = catalog.get_info(id)
+		cover = catalog.get_cover(id, "medium")
+
+		while not cover:
+			id = random.randint(1,4000)
+			book = catalog.get_info(id)
+
+		booklist.append(book)
+		count = count + 1
+
+	return render_template("index.html", books=booklist)
 
 
 @bp.route("/bookshelf", methods=["GET", "POST"])
