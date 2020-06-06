@@ -6,6 +6,7 @@ import openreader.cache as cache
 _page_lines = 30
 
 # https://github.com/garethbjohnson/gutendex#api
+# Returns API results as a dictionary.
 def _read_catalog(route):
 	url = "http://gutendex.com/books" + route
 	try:
@@ -16,7 +17,8 @@ def _read_catalog(route):
 
 
 # https://www.gutenberg.org/wiki/Gutenberg:Information_About_Robot_Access_to_our_Pages
-# returns bytes, not a string
+# Read content from Project Gutenberg directly.
+# Returns unicode string for text content and bytes otherwise.
 def _read_PG(route, text=False):
 	url = "https://www.gutenberg.org" + route
 	try:
@@ -49,8 +51,6 @@ def get_content(id):
 		else:
 			print("Failed to retrieve cached item. Fetching again.")
 
-	#content = _read_PG("/files/{0}/{0}-h/{0}-h.htm".format(id))
-
 	# if available, the -0 version is newer
 	content = _read_PG("/files/{0}/{0}-0.txt".format(id), text=True)
 	if not content:
@@ -60,7 +60,7 @@ def get_content(id):
 	return content
 	
 
-# return book content by page and number of pages
+# return book content by book id and page number
 def get_content_page(id, page):
 	full_book = get_content(id)
 	if not full_book:
@@ -85,7 +85,6 @@ def get_content_image(id, filename):
 
 
 # return a list of book metadata
-# Note: title and author search types artificially limit results to matches
 def search(type, terms):
 	if type == "title-author":
 		return _read_catalog("?search=" + urllib.parse.quote(terms))["results"]
