@@ -94,12 +94,12 @@
             Need more books? Try doing a <a href="{{ url_for('books.search') }}">search</a><!DOCTYPE html>
         </p>
         {% endif %}
-        {% if not books %}
-        <p>Empty! Why not find some books with a <a href="{{ url_for('books.search') }}">search</a>?</p>
-        {% endif %}
     </div>
-
-
+</div>
+<div class="container">
+    {% if not books %}
+    <p>Empty! Why not find some books with a <a href="{{ url_for('books.search') }}">search</a>?</p>
+    {% endif %}
 </div>
 
 <script src="{{ url_for('static', filename='sortTable.js') }}"></script>
