@@ -25,7 +25,7 @@
 		<br>
 		<a href="{{ url_for('books.read', id=book.id) }}">Click here to read the entire text of "{{ book.title }}"</a>
 		<br>
-		Or you can <a href="{{ url_for('books.readPage', id=book.id, page=1) }}">jump to page {{ 1 }}</a-->
+		Or you can <a href="{{ url_for('books.readPage', id=book.id, page=1) }}">jump to page {{ 1 }}</a>
 	</p>
 	<p>
 		{% if g.user %}
@@ -46,12 +46,12 @@
 	<h2>Related Books</h2>
 	<div class="row justify-content-center">
 			<div class="col-auto">
-					{% if books %}
+					{% if relatedbooks %}
 							<table id="bookTable" class="table table-responsive">
-									{% for book in books%}
+									{% for book in relatedbooks %}
 											<th>
-													<a href="{{ url_for('books.info', id=book.id, category=book.subjects[0]) }}">
-															<img src="{{ url_for('books.cover', id=book.id, size='medium') }}" alt="Book Cover">
+													<a href="{{ url_for('books.info', id=book) }}">
+															<img src="{{ url_for('books.cover', id=book, size='medium') }}" alt="Book Cover">
 													</a>
 											</th>
 									{% endfor %}

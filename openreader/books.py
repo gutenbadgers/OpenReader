@@ -71,7 +71,7 @@ def bookshelf():
 
 
 @bp.route("/book/<int:id>")
-def info(id, category):
+def info(id):
 	db = get_db()
 	res = catalog.get_info(id)
 	logged_in = g.user and g.user["id"]
@@ -85,23 +85,49 @@ def info(id, category):
 	else:
 		bookmarked = False
 
-	# Related books finder
-	booklist = []
+	book_title = res["title"]
+	book_author = res["authors"][0]["name"]
+	related_books_data = []
+	related_book_ids = []
+
+	# Get other books by author from API
+	related_books_data = catalog.search("title-author", book_author)
+
+	#Get related books while ensuring they are not same title or book ID as original book
 	count = 0
-	relatedId = 0
+	book_num = 0
+	while count < 5:
+		related_book_id = related_books_data[book_num]["id"]
+		related_book_title = related_books_data[book_num]["title"]
 
-	while count < 6:
-		book = catalog.get_info(relatedId)
-		cover = catalog.get_cover(relatedId, "medium")
-		relatedId = relatedId + 1
-		# Check if the book is in the same category
-		if category == book.subjects[0]:
-			booklist.append(book)
-			count = count + 1
-		else:
-			count = count
+		if related_book_id == id:
+			book_num += 1
+			book_id = related_books_data[book_num]["id"]
+		elif related_book_title == book_title:
+			book_num += 1
+			book_id = related_books_data[book_num]["id"]
 
-	return render_template("bookInfo.html", book=res, bookmarked=bookmarked, books=booklist)
+		related_book_ids.insert(count, book_id)
+		book_num += 1
+		count += 1
+
+	# Related books finder
+	# booklist = []
+	# count = 0
+	# relatedId = 0
+
+	# while count < 6:
+	# 	book = catalog.get_info(relatedId)
+	# 	cover = catalog.get_cover(relatedId, "medium")
+	# 	relatedId = relatedId + 1
+	# 	# Check if the book is in the same category
+	# 	if category == book.subjects[0]:
+	# 		booklist.append(book)
+	# 		count = count + 1
+	# 	else:
+	# 		count = count
+
+	return render_template("bookInfo.html", book=res, bookmarked=bookmarked, relatedbooks=related_book_ids)
 
 
 @bp.route("/book/<int:id>/read")
