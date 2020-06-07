@@ -82,22 +82,21 @@
   
   <h2>Other Books by the Main Author</h2>
 	<div class="row justify-content-center">
-			<div class="col-auto">
-					{% if relatedbooks %}
-							<table id="bookTable" class="table table-responsive">
-									{% for book in relatedbooks %}
-											<th>
-													<a href="{{ url_for('books.info', id=book) }}">
-															<img src="{{ url_for('books.cover', id=book, size='medium') }}" alt="Book Cover">
-													</a>
-											</th>
-									{% endfor %}
-							</table>
-					{% else %}
-							<h4 class="text-center">No other books by this author!</h4>
-					{% endif %}
-			</div>
+        <div class="col-auto">
+            {% if relatedbooks %}
+                <table id="bookTable" class="table table-responsive">
+                    {% for book in relatedbooks %}
+                        <th>
+                            <a href="{{ url_for('books.info', id=book) }}">
+                                    <img src="{{ url_for('books.cover', id=book, size='medium') }}" alt="Book Cover">
+                            </a>
+                        </th>
+                    {% endfor %}
+                </table>
+            {% else %}
+                    <h4 class="text-center">No other books by this author!</h4>
+            {% endif %}
+        </div>
 	</div>
-
 </div>
 {% endblock %}
