@@ -42,4 +42,22 @@
 	{% else %}
 <a href="{{ url_for('auth.login') }}">Log in</a> to add to your bookshelf.
 	{% endif %}
+
+	<h2>Related Books</h2>
+	<div class="row justify-content-center">
+			<div class="col-auto">
+					{% if books %}
+							<table id="bookTable" class="table table-responsive">
+									{% for book in books%}
+											<th>
+													<a href="{{ url_for('books.info', id=book.id, category=book.subjects[0]) }}">
+															<img src="{{ url_for('books.cover', id=book.id, size='medium') }}" alt="Book Cover">
+													</a>
+											</th>
+									{% endfor %}
+							</table>
+					{% endif %}
+			</div>
+	</div>
+</div>
 {% endblock %}

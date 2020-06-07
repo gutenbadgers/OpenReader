@@ -71,7 +71,7 @@ def bookshelf():
 
 
 @bp.route("/book/<int:id>")
-def info(id):
+def info(id, category):
 	db = get_db()
 	res = catalog.get_info(id)
 	logged_in = g.user and g.user["id"]
@@ -85,7 +85,23 @@ def info(id):
 	else:
 		bookmarked = False
 
-	return render_template("bookInfo.html", book=res, bookmarked=bookmarked)
+	# Related books finder
+	booklist = []
+	count = 0
+	relatedId = 0
+
+	while count < 6:
+		book = catalog.get_info(relatedId)
+		cover = catalog.get_cover(relatedId, "medium")
+		relatedId = relatedId + 1
+		# Check if the book is in the same category
+		if category == book.subjects[0]:
+			booklist.append(book)
+			count = count + 1
+		else:
+			count = count
+
+	return render_template("bookInfo.html", book=res, bookmarked=bookmarked, books=booklist)
 
 
 @bp.route("/book/<int:id>/read")
@@ -177,9 +193,9 @@ def send_to_bookmark(id):
 	 	(g.user["id"], id)
 	 ).fetchone()
 
-	 # If case for no bookmarks
+	# If case for no bookmarks
 	if thisBook is None:
-		newURL = url_for("books.info", id=id)
+		newURL = url_for("books.readPage", id=id, page=1)
 		return redirect(newURL)
 
 	#Send user to the correct page
@@ -188,3 +204,21 @@ def send_to_bookmark(id):
 	pageURL = url_for("books.readPage", id=id, page=page)
 
 	return redirect(pageURL)
+
+@bp.route("/book/<int:id>/related")
+def related(id, category):
+	booklist = []
+	count = 0
+	while count < 6:
+		id = random.randint(1,4000)
+		book = catalog.get_info(id)
+		cover = catalog.get_cover(id, "medium")
+
+		while not cover:
+			id = random.randint(1,4000)
+			book = catalog.get_info(id)
+
+		booklist.append(book)
+		count = count + 1
+
+	return render_template("index.html", books=booklist)
