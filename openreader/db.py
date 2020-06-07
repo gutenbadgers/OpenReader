@@ -3,10 +3,8 @@ import click
 from flask import current_app, g
 from flask.cli import with_appcontext
 
-def init_app(app):
-	app.teardown_appcontext(_close_db)
-	app.cli.add_command(_init_db_command)
 
+# return database connection object
 def get_db():
 	if "db" not in g:
 		g.db = sqlite3.connect(
@@ -17,18 +15,30 @@ def get_db():
 	
 	return g.db
 
+
+# remove and clean up database connection
 def _close_db(e=None):
 	db = g.pop("db", None)
 
 	if db is not None:
 		db.close()
 
+
+# create/reset the database
 def _init_db():
 	db = get_db()
 
 	with current_app.open_resource("schema.sql") as s:
 		db.executescript(s.read().decode("utf8"))
-	
+
+
+# tell Flask how to cleanup and register following cli command
+def init_app(app):
+	app.teardown_appcontext(_close_db)
+	app.cli.add_command(_init_db_command)
+
+
+# cli command to create/reset the database
 @click.command("init-db")
 @with_appcontext
 def _init_db_command():
