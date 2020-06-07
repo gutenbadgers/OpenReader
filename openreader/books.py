@@ -102,12 +102,12 @@ def info(id):
 
 		if related_book_id == id:
 			book_num += 1
-			book_id = related_books_data[book_num]["id"]
+			related_book_id = related_books_data[book_num]["id"]
 		elif related_book_title == book_title:
 			book_num += 1
-			book_id = related_books_data[book_num]["id"]
+			related_book_id = related_books_data[book_num]["id"]
 
-		related_book_ids.insert(count, book_id)
+		related_book_ids.insert(count, related_book_id)
 		book_num += 1
 		count += 1
 
@@ -126,6 +126,8 @@ def info(id):
 	# 		count = count + 1
 	# 	else:
 	# 		count = count
+
+	print()
 
 	return render_template("bookInfo.html", book=res, bookmarked=bookmarked, relatedbooks=related_book_ids)
 
