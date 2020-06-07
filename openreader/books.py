@@ -85,6 +85,8 @@ def info(id):
 	else:
 		bookmarked = False
 
+	
+	# Pull book data to compare to related books
 	book_title = res["title"]
 	book_author = res["authors"][0]["name"]
 	related_books_data = []
@@ -93,41 +95,34 @@ def info(id):
 	# Get other books by author from API
 	related_books_data = catalog.search("title-author", book_author)
 
+	# Calculate number of other books by author to no get error trying to display numerous books
+	num_books = 0
+	for book in related_books_data:
+		num_books += 1
+
 	#Get related books while ensuring they are not same title or book ID as original book
 	count = 0
 	book_num = 0
-	while count < 5:
+	while count < 5 and count < num_books:
+		initial_book_num = book_num
+
 		related_book_id = related_books_data[book_num]["id"]
 		related_book_title = related_books_data[book_num]["title"]
 
-		if related_book_id == id:
+		if related_book_id == id and count < num_books:
 			book_num += 1
 			related_book_id = related_books_data[book_num]["id"]
-		elif related_book_title == book_title:
+		elif related_book_title == book_title and count < num_books:
 			book_num += 1
 			related_book_id = related_books_data[book_num]["id"]
 
 		related_book_ids.insert(count, related_book_id)
-		book_num += 1
+
+		#If book_num was already increased, bypass this increase so that we don't overstep index
+		if initial_book_num == book_num:
+			book_num += 1
+		
 		count += 1
-
-	# Related books finder
-	# booklist = []
-	# count = 0
-	# relatedId = 0
-
-	# while count < 6:
-	# 	book = catalog.get_info(relatedId)
-	# 	cover = catalog.get_cover(relatedId, "medium")
-	# 	relatedId = relatedId + 1
-	# 	# Check if the book is in the same category
-	# 	if category == book.subjects[0]:
-	# 		booklist.append(book)
-	# 		count = count + 1
-	# 	else:
-	# 		count = count
-
-	print()
 
 	return render_template("bookInfo.html", book=res, bookmarked=bookmarked, relatedbooks=related_book_ids)
 
