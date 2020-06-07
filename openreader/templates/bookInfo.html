@@ -5,41 +5,83 @@
 {% endblock %}
 
 {% block content %}
-	<img src="{{ url_for('books.cover', id=book.id, size='medium') }}" alt="Book Cover">
-	<br>
-	<p>Authors:</p>
-	<ul>
-		{% for author in book.authors %}
-		<li>{{ author.name }}</li>
-		{% endfor %}
-	</ul>
-	<p>Subjects:</p>
-	<ul>
-		{% for subject in book.subjects %}
-		<li>{{ subject }}</li>
-		{% endfor %}
-	</ul>
-	<h2>Read</h2>
-	<p>
-		<a href="{{ url_for('books.send_to_bookmark', id=book.id) }}">Read from your last bookmark!</a>
-		<br>
-		<a href="{{ url_for('books.read', id=book.id) }}">Click here to read the entire text of "{{ book.title }}"</a>
-		<br>
-		Or you can <a href="{{ url_for('books.readPage', id=book.id, page=1) }}">jump to page {{ 1 }}</a-->
-	</p>
-	<p>
-		{% if g.user %}
-			{% if bookmarked %}
-				This book is already in your <a href="{{ url_for('books.bookshelf') }}">bookshelf</a>!
-			{% else %}
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{{ url_for('index') }}">OpenReader</a>
+        </div>
 
-<form action="{{ url_for('books.bookshelf') }}" method="POST">
-    <input type="hidden" id="action" name="action" value="add">
-    <input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
-    <input type="submit" value="Add to bookshelf">
-</form>
-		{% endif %}
-	{% else %}
-<a href="{{ url_for('auth.login') }}">Log in</a> to add to your bookshelf.
-	{% endif %}
-{% endblock %}
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{  url_for('index')  }}">Home</a></li>
+            {% if g.user %}
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello, {{ g.user['username'] }}! <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ url_for('books.bookshelf') }}">Your Bookshelf</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{{ url_for('auth.logout') }}">Not {{ g.user['username'] }}? log out</a></li>
+                </ul>
+            </li>
+
+            {% else %}
+            <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+            <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+            {% endif %}
+
+        </ul>
+
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-1 col-md-1 col-lg-3"></div>
+        <div class="col-sm-1 col-md-4 col-lg-4">
+            <img src="{{ url_for('books.cover', id=book.id, size='medium') }}" alt="Book Cover">
+        </div>
+        <div class="cold-sm-1 col-md-5 col-lg-5">
+            <p>Authors:</p>
+            <ul>
+                {% for author in book.authors %}
+                <li>{{ author.name }}</li>
+                {% endfor %}
+            </ul>
+            <p>Subjects:</p>
+            <ul>
+                {% for subject in book.subjects %}
+                <li>{{ subject }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="row text-center">
+        <h2>Read</h2>
+        <p>
+            <a href="{{ url_for('books.send_to_bookmark', id=book.id) }}">Read from your last bookmark!</a>
+            <br>
+            <a href="{{ url_for('books.read', id=book.id) }}">Click here to read the entire text of "{{ book.title }}"</a>
+            <br>
+            Or you can <a href="{{ url_for('books.readPage', id=book.id, page=1) }}">jump to page {{ 1 }}</a>
+        </p>
+        <p>
+            {% if g.user %}
+            {% if bookmarked %}
+            This book is already in your <a href="{{ url_for('books.bookshelf') }}">bookshelf</a>!
+            {% else %}
+            <form action="{{ url_for('books.bookshelf') }}" method="POST">
+                <input type="hidden" id="action" name="action" value="add">
+                <input type="hidden" id="book_id" name="book_id" value="{{ book.id }}">
+                <input class="btn btn-primary" type="submit" value="Add to bookshelf">
+            </form>
+            {% endif %}
+            {% else %}
+            <a href="{{ url_for('auth.login') }}">Log in</a> to add to your bookshelf.
+            {% endif %}
+
+    </div>
+
+</div>
+
+
+
+    {% endblock %}

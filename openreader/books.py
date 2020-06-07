@@ -15,7 +15,7 @@ def index():
 
 	booklist = []
 	count = 0
-	while count < 5:
+	while count < 6:
 		id = random.randint(1,4000)
 		book = catalog.get_info(id)
 		cover = catalog.get_cover(id, "medium")
