@@ -104,25 +104,28 @@ def info(id):
 	count = 0
 	book_num = 0
 	while count < 5 and count < num_books:
-		initial_book_num = book_num
-
 		related_book_id = related_books_data[book_num]["id"]
 		related_book_title = related_books_data[book_num]["title"]
 
-		if related_book_id == id and count < num_books:
-			book_num += 1
-			related_book_id = related_books_data[book_num]["id"]
-		elif related_book_title == book_title and count < num_books:
-			book_num += 1
-			related_book_id = related_books_data[book_num]["id"]
-
-		related_book_ids.insert(count, related_book_id)
+		if related_book_id == id:
+			if (book_num + 1) < num_books:
+				book_num += 1
+				related_book_id = related_books_data[book_num]["id"]
+				related_book_ids.insert(count, related_book_id)
+		elif related_book_title == book_title:
+			if (book_num + 1) < num_books:
+				book_num += 1
+				related_book_id = related_books_data[book_num]["id"]
+				related_book_ids.insert(count, related_book_id)
+		elif related_book_id != id and related_book_title != book_title:
+			related_book_ids.insert(count, related_book_id)
 
 		#If book_num was already increased, bypass this increase so that we don't overstep index
-		if initial_book_num == book_num:
+		if  (book_num + 1) >= num_books:
+			count += 1
+		else:
 			book_num += 1
-		
-		count += 1
+			count += 1
 
 	return render_template("bookInfo.html", book=res, bookmarked=bookmarked, relatedbooks=related_book_ids)
 
