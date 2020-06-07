@@ -23,6 +23,7 @@ def login_required(view):
 	return wrapped_view
 
 
+# get the logged in user if available
 @bp.before_app_request
 def load_logged_in_user():
 	user_id = session.get("user_id")
@@ -35,6 +36,7 @@ def load_logged_in_user():
 		).fetchone()
 
 
+# page and form handler for registering new user
 @bp.route("/register", methods=("GET", "POST"))
 def register():
 	if request.method == "POST":
@@ -74,6 +76,7 @@ def register():
 	return render_template("auth/register.html")
 
 
+# page and form handler for logging in
 @bp.route("/login", methods=("GET", "POST"))
 def login():
 	if request.method == "POST":
@@ -100,6 +103,7 @@ def login():
 	return render_template("auth/login.html")
 
 
+# logout and redirect
 @bp.route("/logout")
 def logout():
 	session.clear()

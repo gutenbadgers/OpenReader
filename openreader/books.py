@@ -10,12 +10,13 @@ import random
 
 bp = Blueprint("books", __name__, static_folder="static")
 
+# landing page
 @bp.route("/")
 def index():
 
 	booklist = []
 	count = 0
-	while count < 5:
+	while count < 6:
 		id = random.randint(1,4000)
 		book = catalog.get_info(id)
 		cover = catalog.get_cover(id, "medium")
@@ -30,6 +31,7 @@ def index():
 	return render_template("index.html", books=booklist)
 
 
+# serve a user's saved books
 @bp.route("/bookshelf", methods=["GET", "POST"])
 @login_required
 def bookshelf():
@@ -70,6 +72,7 @@ def bookshelf():
 	return redirect(url_for("books.bookshelf"))
 
 
+# book information and links to read or add to bookshelf
 @bp.route("/book/<int:id>")
 def info(id):
 	db = get_db()
@@ -130,6 +133,7 @@ def info(id):
 	return render_template("bookInfo.html", book=res, bookmarked=bookmarked, relatedbooks=related_book_ids)
 
 
+# read entire book as one page
 @bp.route("/book/<int:id>/read")
 def read(id):
 	content = catalog.get_content(id)
@@ -138,7 +142,8 @@ def read(id):
 	else:
 		return "Book not available!"
 
-# Route to get book page
+
+# read book a page at a time
 @bp.route("/book/<int:id>/read/<int:page>")
 def readPage(id, page):
 	body = catalog.get_content_page(id, page)
@@ -152,6 +157,7 @@ def readPage(id, page):
 	return render_template("bookPage.html", **locals())
 
 
+# get image of book cover
 @bp.route("/book/<int:id>/cover/<string:size>")
 def cover(id, size):
 	cover = catalog.get_cover(id, size)
@@ -161,12 +167,13 @@ def cover(id, size):
 	return cover
 
 
-# images referenced in book content
+# images referenced in html book content (obsolete)
 @bp.route("/book/<int:id>/images/<string:imageName>")
 def image(id, imageName):
 	return catalog.get_content_image(id, imageName)
 
 
+# return search page with no results
 @bp.route("/search", methods=["GET", "POST"])
 def search():
 	if request.method == "GET":
@@ -182,6 +189,7 @@ def search():
 	return redirect(url, code=303)
 
 
+# search page with results
 @bp.route("/search/<string:searchType>/<string:terms>")
 def searchResults(searchType, terms):
 	if searchType not in ["title-author", "category"]:
@@ -190,11 +198,11 @@ def searchResults(searchType, terms):
 	books = catalog.search(searchType, terms)
 	return render_template("search.html", **locals())
 
-# Function to get the URL of the current page to be used in bookmarks.
+
+# save current page as a bookmark
 @bp.route("/book/<int:id>/read/<int:page>/getbookmark")
 @login_required
 def getBookmark(id, page):
-	pageURL = url_for("books.readPage", id=id, page=page)
 	db = get_db()
 	if not g: abort(400)
 
@@ -207,6 +215,8 @@ def getBookmark(id, page):
 	db.commit()
 	return redirect(newURL)
 
+
+# retrieve and redirect to a user's bookmark
 @bp.route("/book/<int:id>/readbookmark")
 @login_required
 def send_to_bookmark(id):

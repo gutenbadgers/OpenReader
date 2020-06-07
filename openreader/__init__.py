@@ -15,11 +15,13 @@ def create_app():
 		CACHESIZE=(1048576*50) # 50 megabytes
 	)
 
+	# create directory for storing local instance files like db and cache
 	try:
 		os.makedirs(app.instance_path)
 	except OSError:
 		pass
 
+	# register modules for correct initialization and teardown
 	from . import db
 	db.init_app(app)
 
