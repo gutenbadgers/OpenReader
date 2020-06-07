@@ -88,7 +88,49 @@ def info(id):
 	else:
 		bookmarked = False
 
-	return render_template("bookInfo.html", book=res, bookmarked=bookmarked)
+	
+	# Pull book data to compare to related books
+	book_title = res["title"]
+	book_author = res["authors"][0]["name"]
+	related_books_data = []
+	related_book_ids = []
+
+	# Get other books by author from API
+	related_books_data = catalog.search("title-author", book_author)
+
+	# Calculate number of other books by author to no get error trying to display numerous books
+	num_books = 0
+	for book in related_books_data:
+		num_books += 1
+
+	#Get related books while ensuring they are not same title or book ID as original book
+	count = 0
+	book_num = 0
+	while count < 5 and count < num_books:
+		related_book_id = related_books_data[book_num]["id"]
+		related_book_title = related_books_data[book_num]["title"]
+
+		if related_book_id == id:
+			if (book_num + 1) < num_books:
+				book_num += 1
+				related_book_id = related_books_data[book_num]["id"]
+				related_book_ids.insert(count, related_book_id)
+		elif related_book_title == book_title:
+			if (book_num + 1) < num_books:
+				book_num += 1
+				related_book_id = related_books_data[book_num]["id"]
+				related_book_ids.insert(count, related_book_id)
+		elif related_book_id != id and related_book_title != book_title:
+			related_book_ids.insert(count, related_book_id)
+
+		#If book_num was already increased, bypass this increase so that we don't overstep index
+		if  (book_num + 1) >= num_books:
+			count += 1
+		else:
+			book_num += 1
+			count += 1
+
+	return render_template("bookInfo.html", book=res, bookmarked=bookmarked, relatedbooks=related_book_ids)
 
 
 # read entire book as one page
@@ -187,9 +229,9 @@ def send_to_bookmark(id):
 	 	(g.user["id"], id)
 	 ).fetchone()
 
-	 # If case for no bookmarks
+	# If case for no bookmarks
 	if thisBook is None:
-		newURL = url_for("books.info", id=id)
+		newURL = url_for("books.readPage", id=id, page=1)
 		return redirect(newURL)
 
 	#Send user to the correct page
@@ -198,3 +240,21 @@ def send_to_bookmark(id):
 	pageURL = url_for("books.readPage", id=id, page=page)
 
 	return redirect(pageURL)
+
+@bp.route("/book/<int:id>/related")
+def related(id, category):
+	booklist = []
+	count = 0
+	while count < 6:
+		id = random.randint(1,4000)
+		book = catalog.get_info(id)
+		cover = catalog.get_cover(id, "medium")
+
+		while not cover:
+			id = random.randint(1,4000)
+			book = catalog.get_info(id)
+
+		booklist.append(book)
+		count = count + 1
+
+	return render_template("index.html", books=booklist)
